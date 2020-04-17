@@ -10,7 +10,7 @@ const loginSucces = (data) => {
 
 export const signupThunk = (firstName, lastName, email, password) => {
   return async (dispatch, getState) => {
-    console.log("Data in thunk", firstName, lastName, email, password);
+    // console.log("Data in thunk", firstName, lastName, email, password);
     try {
       const response = await recipeApi.post("/signup", {
         firstName,
@@ -18,8 +18,27 @@ export const signupThunk = (firstName, lastName, email, password) => {
         email,
         password,
       });
-      console.log(response);
+      // console.log(response);
       await AsyncStorage.setItem("token", response.data.token);
+      dispatch(loginSucces(response.data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const loginThunk = (email, password) => {
+  return async (dispatch, getState) => {
+    console.log("Data in thunk / login:", email, password);
+
+    try {
+      const response = await recipeApi.post("/login", {
+        email,
+        password,
+      });
+      console.log("RESPONSE login:", response);
+
+      AsyncStorage.setItem("token", respones.data.token);
       dispatch(loginSucces(response.data));
     } catch (e) {
       console.log(e);

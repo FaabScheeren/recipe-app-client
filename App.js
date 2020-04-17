@@ -11,6 +11,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomNavigator } from "@react-navigation/bottom-tabs";
 
 import SignupScreen from "./src/screens/SignupScreen";
+import SigninScreen from "./src/screens/SigninScreen";
+import { hide } from "expo/build/launch/SplashScreen";
 
 const Stack = createStackNavigator();
 
@@ -32,7 +34,18 @@ export default function App() {
             <Stack.Screen
               name="Signup"
               component={SignupScreen}
-              options={{ title: "Welcome!" }}
+              options={{
+                title: "Welcome!",
+              }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={SigninScreen}
+              options={{
+                title: "Welcome!",
+                headerBackTitleVisible: false,
+                headerBackImage: hide,
+              }}
             />
           </Stack.Navigator>
         </NavigationContainer>
