@@ -1,19 +1,55 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { Provider } from "react-redux";
+import store from "./src/store";
+import ErrorBoundary from "./ErrorBoundary";
+
+import {
+  NavigationContainer,
+  createSwitchNavigator,
+} from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomNavigator } from "@react-navigation/bottom-tabs";
+
+import SignupScreen from "./src/screens/SignupScreen";
+import SigninScreen from "./src/screens/SigninScreen";
+import { hide } from "expo/build/launch/SplashScreen";
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Signup"
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: "#f4511e",
+              },
+              headerTintColor: "#fff",
+              headerTitleAlign: "center",
+            }}
+          >
+            <Stack.Screen
+              name="Signup"
+              component={SignupScreen}
+              options={{
+                title: "Welcome!",
+              }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={SigninScreen}
+              options={{
+                title: "Welcome!",
+                headerBackTitleVisible: false,
+                headerBackImage: hide,
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </ErrorBoundary>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
