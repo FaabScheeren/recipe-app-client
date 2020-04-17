@@ -1,14 +1,16 @@
 import recipeApi from "../../config/api";
+import { AsyncStorage } from "react-native";
 
-export const loginSucces = (data) => {
+const loginSucces = (data) => {
   return {
     type: "login",
     payload: data,
   };
 };
 
-const signupThunk = (firstName, lastName, email, password) => {
+export const signupThunk = (firstName, lastName, email, password) => {
   return async (dispatch, getState) => {
+    console.log("Data in thunk", firstName, lastName, email, password);
     try {
       const response = await recipeApi.post("/signup", {
         firstName,
@@ -17,6 +19,7 @@ const signupThunk = (firstName, lastName, email, password) => {
         password,
       });
       console.log(response);
+      await AsyncStorage.setItem("token", response.data.token);
       dispatch(loginSucces(response.data));
     } catch (e) {
       console.log(e);
