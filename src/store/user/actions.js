@@ -36,10 +36,12 @@ export const loginThunk = (email, password) => {
         email,
         password,
       });
-      console.log("RESPONSE login:", response);
+      // console.log("RESPONSE login:", response);
 
-      AsyncStorage.setItem("token", respones.data.token);
+      AsyncStorage.setItem("token", response.data.token);
       dispatch(loginSucces(response.data));
+      const state = getState();
+      console.log("THIS IS THE STATE:", state.user.token);
     } catch (e) {
       console.log(e);
     }
