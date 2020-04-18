@@ -1,10 +1,7 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import {
-  NavigationContainer,
-  createSwitchNavigator,
-} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomNavigator } from "@react-navigation/bottom-tabs";
 
@@ -13,7 +10,7 @@ import SigninScreen from "./src/screens/SigninScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import { hide } from "expo/build/launch/SplashScreen";
 
-import { selectToken, selectUser } from "./src/store/user/selector";
+import { selectToken } from "./src/store/user/selector";
 
 const Stack = createStackNavigator();
 

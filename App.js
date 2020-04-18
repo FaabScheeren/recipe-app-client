@@ -70,8 +70,8 @@
 //   );
 // }
 
-import React from "react";
-import { Provider } from "react-redux";
+import React, { useEffect } from "react";
+import { Provider, useDispatch } from "react-redux";
 import store from "./src/store";
 import ErrorBoundary from "./ErrorBoundary";
 import Navigation from "./Navigation";
