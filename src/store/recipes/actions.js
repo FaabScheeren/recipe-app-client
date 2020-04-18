@@ -9,9 +9,19 @@ const storeRecipe = (recipe) => {
 
 export const getRecipes = () => {
   return async (dispatch, getState) => {
-    const response = await recipeApi.get("/recipes");
-    console.log("RESPONSE", response);
+    const token = getState().user.token;
 
-    dispatch(storeRecipe(response.data));
+    try {
+      const response = await recipeApi.get("/recipes", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("RESPONSE", response);
+
+      dispatch(storeRecipe(response.data));
+    } catch (e) {
+      console.log(e);
+    }
   };
 };

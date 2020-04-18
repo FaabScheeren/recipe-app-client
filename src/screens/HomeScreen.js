@@ -1,16 +1,38 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { Image } from "react-native-elements";
 import { recipeSelector } from "../store/recipes/selectors";
+import { getRecipes } from "../store/recipes/actions";
 
 function HomeScreen(props) {
+  const dispatch = useDispatch();
   const selectRecipes = useSelector(recipeSelector);
-  console.log("RECIPE SELECTOR", selectRecipes);
+  console.log("Recipes in screen", selectRecipes);
+
+  useEffect(() => {
+    dispatch(getRecipes());
+  }, [dispatch]);
 
   return (
-    <View>
+    <>
       <Text>Home screen</Text>
-    </View>
+
+      <FlatList
+        data={selectRecipes}
+        renderItem={({ item }) => (
+          <View>
+            <Image
+              source={{ uri: item.media[0].file_name }}
+              style={{ width: 420, height: 420 }}
+            />
+
+            <Text>{item.title}</Text>
+          </View>
+        )}
+        keyExtractor={(recipe) => recipe.id.toString()}
+      />
+    </>
   );
 }
 
