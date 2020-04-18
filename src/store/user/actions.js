@@ -8,6 +8,13 @@ const loginSucces = (data) => {
   };
 };
 
+const setToken = (data) => {
+  return {
+    type: "storeToken",
+    payload: data,
+  };
+};
+
 export const signupThunk = (firstName, lastName, email, password) => {
   return async (dispatch, getState) => {
     // console.log("Data in thunk", firstName, lastName, email, password);
@@ -57,8 +64,10 @@ export const tryLocalLogin = () => {
       const response = await recipeApi.get("/get-user", {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      dispatch(loginSucces(response.data));
+      console.log("Response local login", response.data);
+      const userWithToken = { ...response.data, token };
+      console.log("User with token", userWithToken);
+      dispatch(loginSucces(userWithToken));
     }
   };
 };
