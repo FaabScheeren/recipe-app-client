@@ -8,14 +8,28 @@ import { createBottomNavigator } from "@react-navigation/bottom-tabs";
 import SignupScreen from "./src/screens/SignupScreen";
 import SigninScreen from "./src/screens/SigninScreen";
 import HomeScreen from "./src/screens/HomeScreen";
+import WhiteScreen from "./src/screens/WhiteScreen";
 import { hide } from "expo/build/launch/SplashScreen";
 
 import { selectToken } from "./src/store/user/selector";
+import { selectAppLoading } from "./src/store/appState/selectors";
+
+import { tryLocalLogin } from "./src/store/user/actions";
 
 const Stack = createStackNavigator();
 
 export default function Navigation() {
+  const dispatch = useDispatch();
   const token = useSelector(selectToken);
+  const appState = useSelector(selectAppLoading);
+
+  useEffect(() => {
+    dispatch(tryLocalLogin());
+  }, [dispatch]);
+
+  if (appState) {
+    return <WhiteScreen />;
+  }
 
   return (
     <NavigationContainer>

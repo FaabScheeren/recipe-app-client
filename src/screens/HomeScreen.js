@@ -8,7 +8,7 @@ import { getRecipes } from "../store/recipes/actions";
 function HomeScreen(props) {
   const dispatch = useDispatch();
   const selectRecipes = useSelector(recipeSelector);
-  console.log("Recipes in screen", selectRecipes);
+  // console.log("Recipes in screen", selectRecipes);
 
   useEffect(() => {
     dispatch(getRecipes());

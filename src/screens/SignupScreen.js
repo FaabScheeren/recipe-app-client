@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Button, Input } from "react-native-elements";
 // import LoginForm from "../components/LoginForm";
 import { signupThunk } from "../store/user/actions";
-import { tryLocalLogin } from "../store/user/actions";
+// import { tryLocalLogin } from "../store/user/actions";
 
 function SignupScreen({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -13,9 +13,9 @@ function SignupScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(tryLocalLogin());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(tryLocalLogin());
+  // }, [dispatch]);
 
   return (
     <View>
