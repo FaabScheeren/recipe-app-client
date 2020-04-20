@@ -17,7 +17,7 @@ export const getRecipes = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log("RESPONSE", response);
+      console.log("RESPONSE", response);
 
       dispatch(storeRecipe(response.data));
     } catch (e) {
