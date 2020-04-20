@@ -1,4 +1,5 @@
 import React from "react";
+import FallbackComponent from "./src/screens/FallbackComponent";
 
 export default class ErrorBoundary extends React.Component {
   state = { hasError: false };
