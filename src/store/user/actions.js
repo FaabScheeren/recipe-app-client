@@ -56,8 +56,6 @@ export const signoutThunk = () => {
     dispatch(appLoading());
     await AsyncStorage.removeItem("token");
     dispatch(signout());
-    const user = getState().user;
-    console.log("State in thunk after removing", user);
     dispatch(appDoneLoading());
   };
 };
