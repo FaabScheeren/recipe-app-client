@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Button, Input } from "react-native-elements";
 // import LoginForm from "../components/LoginForm";
 import { signupThunk } from "../store/user/actions";
+// import { tryLocalLogin } from "../store/user/actions";
 
 function SignupScreen({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -11,6 +12,10 @@ function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(tryLocalLogin());
+  // }, [dispatch]);
 
   return (
     <View>
