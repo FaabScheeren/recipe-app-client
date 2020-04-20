@@ -29,22 +29,30 @@ function HomeScreen({ navigation }) {
         data={selectRecipes}
         renderItem={({ item }) => (
           <View>
-            <Image
-              source={{ uri: item.media[0].file_name }}
-              style={{ width: 420, height: 420 }}
-            />
-            <View>
-              <Text>{item.title}</Text>
-              <Text>{item.createdAt}</Text>
-              <Text>
-                {item.user.first_name} {item.user.last_name}
-              </Text>
-            </View>
-            <View>
-              <FontAwesome name="heart" />
-              <FontAwesome name="comment" />
-              <FontAwesome name="share" />
-            </View>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("RecipeDetails", {
+                  recipeId: item.id,
+                })
+              }
+            >
+              <Image
+                source={{ uri: item.media[0].file_name }}
+                style={{ width: 420, height: 420 }}
+              />
+              <View>
+                <Text>{item.title}</Text>
+                <Text>{item.createdAt}</Text>
+                <Text>
+                  {item.user.first_name} {item.user.last_name}
+                </Text>
+              </View>
+              <View>
+                <FontAwesome name="heart" />
+                <FontAwesome name="comment" />
+                <FontAwesome name="share" />
+              </View>
+            </TouchableOpacity>
           </View>
         )}
         keyExtractor={(recipe) => recipe.id.toString()}
