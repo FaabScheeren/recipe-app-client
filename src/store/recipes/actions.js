@@ -43,6 +43,7 @@ export const getRecipeDetails = (id) => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log("Recipe details response", response.data);
       dispatch(storeRecipeDetails(response.data));
     } catch (e) {}
   };
