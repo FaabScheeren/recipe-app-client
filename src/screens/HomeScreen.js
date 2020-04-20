@@ -25,6 +25,10 @@ function HomeScreen({ navigation }) {
     <>
       <Text>Home screen</Text>
       <Button title="Sign out" onPress={() => dispatch(signoutThunk())} />
+      <Button
+        title="Add recipe"
+        onPress={() => navigation.navigate("AddRecipe")}
+      />
       <FlatList
         data={selectRecipes}
         renderItem={({ item }) => (
