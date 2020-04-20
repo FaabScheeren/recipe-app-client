@@ -27,6 +27,8 @@ export default function Navigation() {
     dispatch(tryLocalLogin());
   }, [dispatch]);
 
+  console.log("appState", appState);
+
   if (appState) {
     return <WhiteScreen />;
   }

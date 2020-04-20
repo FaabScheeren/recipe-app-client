@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import { Image } from "react-native-elements";
+import { Image, Button } from "react-native-elements";
 import { recipeSelector } from "../store/recipes/selectors";
 import { getRecipes } from "../store/recipes/actions";
+import { signoutThunk } from "../store/user/actions";
 
 function HomeScreen(props) {
   const dispatch = useDispatch();
   const selectRecipes = useSelector(recipeSelector);
-  // console.log("Recipes in screen", selectRecipes);
 
   useEffect(() => {
     dispatch(getRecipes());
@@ -17,7 +17,7 @@ function HomeScreen(props) {
   return (
     <>
       <Text>Home screen</Text>
-
+      <Button title="Sign out" onPress={() => dispatch(signoutThunk())} />
       <FlatList
         data={selectRecipes}
         renderItem={({ item }) => (

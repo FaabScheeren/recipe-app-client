@@ -9,6 +9,12 @@ const loginSucces = (data) => {
   };
 };
 
+const signout = () => {
+  return {
+    type: "signout",
+  };
+};
+
 export const signupThunk = (firstName, lastName, email, password) => {
   return async (dispatch, getState) => {
     try {
@@ -43,21 +49,34 @@ export const loginThunk = (email, password) => {
   };
 };
 
+export const signoutThunk = () => {
+  // console.log("Clicked in thunk");
+
+  return async (dispatch, getState) => {
+    dispatch(appLoading());
+    await AsyncStorage.removeItem("token");
+    dispatch(signout());
+    const user = getState().user;
+    console.log("State in thunk after removing", user);
+    dispatch(appDoneLoading());
+  };
+};
+
 export const tryLocalLogin = () => {
   return async (dispatch, getState) => {
     dispatch(appLoading());
     const token = await AsyncStorage.getItem("token");
 
     if (!token) {
-      return;
+      dispatch(appDoneLoading());
     } else {
       const response = await recipeApi.get("/get-user", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       const userWithToken = { ...response.data, token };
-      dispatch(loginSucces(userWithToken));
       dispatch(appDoneLoading());
+      dispatch(loginSucces(userWithToken));
     }
   };
 };
