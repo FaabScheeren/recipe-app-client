@@ -10,7 +10,7 @@
 // };
 
 const initialState = {
-  recipeDetails: {},
+  recipeDetails: null,
   recipes: [],
 };
 
