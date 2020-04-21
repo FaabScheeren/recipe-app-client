@@ -9,6 +9,8 @@ import SignupScreen from "./src/screens/SignupScreen";
 import SigninScreen from "./src/screens/SigninScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import WhiteScreen from "./src/screens/WhiteScreen";
+import RecipeDetailsScreen from "./src/screens/RecipeDetailsScreen";
+import AddRecipeScreen from "./src/screens/AddRecipeScreen";
 import { hide } from "expo/build/launch/SplashScreen";
 
 import { selectToken } from "./src/store/user/selector";
@@ -26,8 +28,6 @@ export default function Navigation() {
   useEffect(() => {
     dispatch(tryLocalLogin());
   }, [dispatch]);
-
-  console.log("appState", appState);
 
   if (appState) {
     return <WhiteScreen />;
@@ -67,6 +67,11 @@ export default function Navigation() {
         ) : (
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen
+              name="RecipeDetails"
+              component={RecipeDetailsScreen}
+            />
+            <Stack.Screen name="AddRecipe" component={AddRecipeScreen} />
           </>
         )}
       </Stack.Navigator>
