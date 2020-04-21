@@ -33,6 +33,7 @@ function HomeScreen({ navigation }) {
         title="Add recipe"
         onPress={() => navigation.navigate("AddRecipe")}
       />
+      <Button title="Account" onPress={() => navigation.navigate("Account")} />
       <FlatList
         data={selectRecipes}
         renderItem={({ item }) => (
