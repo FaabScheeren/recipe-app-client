@@ -1,6 +1,6 @@
 import recipeApi from "../../config/api";
 
-const storeRecipe = (recipe) => {
+const storeRecipes = (recipe) => {
   return {
     type: "add_recipes",
     payload: recipe,
@@ -10,6 +10,13 @@ const storeRecipe = (recipe) => {
 const storeRecipeDetails = (recipe) => {
   return {
     type: "store_recipe_details",
+    payload: recipe,
+  };
+};
+
+const storeRecipe = (recipe) => {
+  return {
+    type: "add_recipe",
     payload: recipe,
   };
 };
@@ -26,7 +33,7 @@ export const getRecipes = () => {
       });
       // console.log("RESPONSE", response);
 
-      dispatch(storeRecipe(response.data));
+      dispatch(storeRecipes(response.data));
     } catch (e) {
       console.log(e);
     }
@@ -43,8 +50,34 @@ export const getRecipeDetails = (id) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Recipe details response", response.data);
+      // console.log("Recipe details response", response.data);
       dispatch(storeRecipeDetails(response.data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const addRecipeThunk = (
+  title,
+  description,
+  step,
+  cookingTime,
+  category,
+  ingredient
+) => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+
+    try {
+      const response = await recipeApi.post("recipes", {
+        data: { title, description, step, cookingTime, category, ingredient },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Response adding new recipe to database", response.data);
+      dispatch(storeRecipe(response.data));
     } catch (e) {}
   };
 };

@@ -20,6 +20,8 @@ export default recipesReducer = (state = initialState, action) => {
       return { ...state, recipes: [...action.payload] };
     case "store_recipe_details":
       return { ...state, recipeDetails: { ...action.payload } };
+    case "add_recipe":
+      return { ...state, recipes: [...recipes, action.payload] };
     default:
       return state;
   }
