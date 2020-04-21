@@ -1,14 +1,3 @@
-// const initialState = [];
-
-// export default recipesReducer = (state = initialState, action) => {
-//   switch (action.type) {
-//     case "add_recipes":
-//       return [...action.payload];
-//     default:
-//       return state;
-//   }
-// };
-
 const initialState = {
   recipeDetails: null,
   recipes: [],
@@ -21,7 +10,7 @@ export default recipesReducer = (state = initialState, action) => {
     case "store_recipe_details":
       return { ...state, recipeDetails: { ...action.payload } };
     case "add_recipe":
-      return { ...state, recipes: [...recipes, action.payload] };
+      return { ...state, recipes: [...state.recipes, action.payload] };
     default:
       return state;
   }

@@ -40,10 +40,6 @@ function HomeScreen({ navigation }) {
                 })
               }
             >
-              <Image
-                source={{ uri: item.media[0].file_name }}
-                style={{ width: 420, height: 420 }}
-              />
               <View>
                 <Text>{item.title}</Text>
                 <Text>{item.createdAt}</Text>
@@ -66,3 +62,8 @@ function HomeScreen({ navigation }) {
 }
 
 export default HomeScreen;
+
+// <Image
+//                 source={{ uri: item.media[0].file_name }}
+//                 style={{ width: 420, height: 420 }}
+//               />

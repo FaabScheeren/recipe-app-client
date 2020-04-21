@@ -61,23 +61,37 @@ export const getRecipeDetails = (id) => {
 export const addRecipeThunk = (
   title,
   description,
-  step,
+  stepsArray,
   cookingTime,
   category,
-  ingredient
+  ingredientsArray
 ) => {
   return async (dispatch, getState) => {
     const token = getState().user.token;
 
     try {
-      const response = await recipeApi.post("recipes", {
-        data: { title, description, step, cookingTime, category, ingredient },
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await recipeApi.post(
+        "/recipes",
+        {
+          title,
+          description,
+          stepsArray,
+          cookingTime,
+          category,
+          ingredientsArray,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log("Response adding new recipe to database", response.data);
       dispatch(storeRecipe(response.data));
-    } catch (e) {}
+      const recipeState = getState().recipes.recipes;
+      console.log("RECIPE STATE", recipeState);
+    } catch (e) {
+      console.log(e);
+    }
   };
 };

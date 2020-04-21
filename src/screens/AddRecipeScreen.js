@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { View, Text, Picker } from "react-native";
 import { Input, Button } from "react-native-elements";
+import { addRecipeThunk } from "../store/recipes/actions";
 
-function AddRecipeScreen(props) {
+function AddRecipeScreen({ navigation }) {
+  const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [step, setStep] = useState("");
@@ -25,6 +29,17 @@ function AddRecipeScreen(props) {
 
   const handleSubmit = () => {
     console.log("Clicked");
+    dispatch(
+      addRecipeThunk(
+        title,
+        description,
+        stepsArray,
+        cookingTime,
+        category,
+        ingredientsArray
+      )
+    );
+    navigation.navigate("Home");
   };
 
   return (
@@ -60,9 +75,9 @@ function AddRecipeScreen(props) {
         onValueChange={(item) => setCategory(item)}
       >
         <Picker.Item label="Choose a category" value="no value" />
-        <Picker.Item label="Desserts" value="Desserts" />
-        <Picker.Item label="Pasta" value="Pasta" />
-        <Picker.Item label="Lunch" value="Lunch" />
+        <Picker.Item label="Desserts" value={1} />
+        <Picker.Item label="Pasta" value={2} />
+        <Picker.Item label="Lunch" value={3} />
       </Picker>
 
       {ingredientsArray.map((ingredient) => {
@@ -73,7 +88,6 @@ function AddRecipeScreen(props) {
         value={ingredient}
         onChangeText={(text) => setIngredient(text)}
         label="Ingredients"
-        // onKeyPress={(event) => bang(event)}
         onSubmitEditing={(event) => submitHandlerIngredients(event)}
       />
       <Button title="Add recipe" onPress={() => handleSubmit()} />
