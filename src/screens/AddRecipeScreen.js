@@ -17,14 +17,9 @@ function AddRecipeScreen({ navigation }) {
   const [ingredientsArray, setIngredientsArray] = useState([]);
   const [stepsArray, setStepsArray] = useState([]);
 
-  const submitHandlerSteps = (e) => {
-    setStepsArray([...stepsArray, step]);
-    setStep("");
-  };
-
-  const submitHandlerIngredients = (e) => {
-    setIngredientsArray([...ingredientsArray, ingredient]);
-    setIngredient("");
+  const submitHandler = (setArray, array, item, setItem) => {
+    setArray([...array, item]);
+    setItem("");
   };
 
   const handleSubmit = () => {
@@ -63,7 +58,9 @@ function AddRecipeScreen({ navigation }) {
         value={step}
         onChangeText={(text) => setStep(text)}
         label="Steps"
-        onSubmitEditing={(event) => submitHandlerSteps(event)}
+        onSubmitEditing={(event) =>
+          submitHandler(setStepsArray, stepsArray, step, setStep)
+        }
       />
       <Input
         onChangeText={(text) => setCookingTime(text)}
@@ -88,7 +85,14 @@ function AddRecipeScreen({ navigation }) {
         value={ingredient}
         onChangeText={(text) => setIngredient(text)}
         label="Ingredients"
-        onSubmitEditing={(event) => submitHandlerIngredients(event)}
+        onSubmitEditing={(event) =>
+          submitHandler(
+            setIngredientsArray,
+            ingredientsArray,
+            ingredient,
+            setIngredient
+          )
+        }
       />
       <Button title="Add recipe" onPress={() => handleSubmit()} />
     </View>

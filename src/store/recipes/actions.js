@@ -86,10 +86,9 @@ export const addRecipeThunk = (
           },
         }
       );
-      console.log("Response adding new recipe to database", response.data);
+
       dispatch(storeRecipe(response.data));
       const recipeState = getState().recipes.recipes;
-      console.log("RECIPE STATE", recipeState);
     } catch (e) {
       console.log(e);
     }
