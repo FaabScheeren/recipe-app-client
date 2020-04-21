@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Image, Button } from "react-native-elements";
 import { recipeSelector } from "../store/recipes/selectors";
+import { selectUser } from "../store/user/selector";
 import { getRecipes } from "../store/recipes/actions";
 import { signoutThunk } from "../store/user/actions";
 import { FontAwesome } from "@expo/vector-icons";
@@ -16,6 +17,9 @@ import { FontAwesome } from "@expo/vector-icons";
 function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const selectRecipes = useSelector(recipeSelector);
+  const user = useSelector(selectUser);
+
+  console.log("USER", user);
 
   useEffect(() => {
     dispatch(getRecipes());
@@ -40,6 +44,10 @@ function HomeScreen({ navigation }) {
                 })
               }
             >
+              <Image
+                source={{ uri: item.media[0].file_name }}
+                style={{ width: 420, height: 420 }}
+              />
               <View>
                 <Text>{item.title}</Text>
                 <Text>{item.createdAt}</Text>
@@ -62,8 +70,3 @@ function HomeScreen({ navigation }) {
 }
 
 export default HomeScreen;
-
-// <Image
-//                 source={{ uri: item.media[0].file_name }}
-//                 style={{ width: 420, height: 420 }}
-//               />
