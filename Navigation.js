@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomNavigator } from "@react-navigation/bottom-tabs";
+import {
+  createBottomNavigator,
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
 
 import SignupScreen from "./src/screens/SignupScreen";
 import SigninScreen from "./src/screens/SigninScreen";
@@ -20,6 +23,47 @@ import { selectAppLoading } from "./src/store/appState/selectors";
 import { tryLocalLogin } from "./src/store/user/actions";
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function Home() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+        title="Home"
+        name="Home"
+        component={HomeScreen}
+        options={{ title: "Home" }}
+      />
+      <Tab.Screen
+        title="Add recipe"
+        name="Addrecipes"
+        component={AddRecipeScreen}
+        options={{ title: "Add recipe", headerTitle: "Add recipe" }}
+      />
+      <Tab.Screen
+        title="Account"
+        name="Account"
+        component={AccountScreen}
+        options={{ title: "Account" }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+function getHeaderTitle(route) {
+  const routeName = route.state
+    ? route.state.routes[route.state.index].name
+    : route.params?.screen || "Home";
+
+  switch (routeName) {
+    case "Home":
+      return "Home";
+    case "Addrecipes":
+      return "Add recipe";
+    case "Account":
+      return "Account";
+  }
+}
 
 export default function Navigation() {
   const dispatch = useDispatch();
@@ -67,16 +111,16 @@ export default function Navigation() {
           </>
         ) : (
           <>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={({ route }) => ({
+                headerTitle: getHeaderTitle(route),
+              })}
+            />
             <Stack.Screen
               name="RecipeDetails"
               component={RecipeDetailsScreen}
-            />
-            <Stack.Screen name="AddRecipe" component={AddRecipeScreen} />
-            <Stack.Screen
-              name="Account"
-              component={AccountScreen}
-              options={({ route }) => ({ title: route.params.name })}
             />
           </>
         )}
