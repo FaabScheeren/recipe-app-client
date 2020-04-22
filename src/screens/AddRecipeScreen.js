@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch } from "react-redux";
-import { View, ScrollView, Text, Picker } from "react-native";
+import { View, ScrollView, Text, Picker, Switch } from "react-native";
 import { Input, Button, Image } from "react-native-elements";
 import { addRecipeThunk } from "../store/recipes/actions";
 
@@ -15,10 +15,13 @@ function AddRecipeScreen({ navigation }) {
   const [category, setCategory] = useState("");
   const [ingredientsArray, setIngredientsArray] = useState([]);
   const [photo, setPhoto] = useState("");
+  const [is_public, setIs_public] = useState(false);
 
   const [step, setStep] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
+
+  console.log("PUBLIC?", is_public);
 
   // Add step or ingredient to the arrays
   const submitHandler = (setArray, array, item, setItem) => {
@@ -36,7 +39,8 @@ function AddRecipeScreen({ navigation }) {
         cookingTime,
         category,
         ingredientsArray,
-        photo
+        photo,
+        is_public
       )
     );
     navigation.navigate("Home");
@@ -127,8 +131,8 @@ function AddRecipeScreen({ navigation }) {
         label="Cooking time"
         keyboardType="numeric"
       />
+      <Text>Choose a category for your recipe.</Text>
       <Picker
-        label="Category"
         selectedValue={category}
         onValueChange={(item) => setCategory(item)}
       >
@@ -152,6 +156,11 @@ function AddRecipeScreen({ navigation }) {
             setIngredient
           )
         }
+      />
+      <Text>Do you want to show this recipe on your public profile?</Text>
+      <Switch
+        value={is_public}
+        onValueChange={() => setIs_public(!is_public)}
       />
       <Button title="Add recipe" onPress={() => handleSubmit()} />
     </ScrollView>
