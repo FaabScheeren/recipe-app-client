@@ -18,8 +18,6 @@ function HomeScreen({ navigation }) {
   const selectRecipes = useSelector(recipeSelector);
   const user = useSelector(selectUser);
 
-  console.log("USER", user);
-
   useEffect(() => {
     dispatch(getRecipes());
   }, [dispatch]);

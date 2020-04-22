@@ -17,6 +17,7 @@ import WhiteScreen from "./src/screens/WhiteScreen";
 import RecipeDetailsScreen from "./src/screens/RecipeDetailsScreen";
 import AddRecipeScreen from "./src/screens/AddRecipeScreen";
 import AccountScreen from "./src/screens/AccountScreen";
+import RecipeOverviewScreen from "./src/screens/RecipeOverviewScreen";
 import { hide } from "expo/build/launch/SplashScreen";
 
 import { selectToken } from "./src/store/user/selector";
@@ -155,6 +156,10 @@ export default function Navigation() {
             <Stack.Screen
               name="RecipeDetails"
               component={RecipeDetailsScreen}
+            />
+            <Stack.Screen
+              name="RecipeOverview"
+              component={RecipeOverviewScreen}
             />
           </>
         )}

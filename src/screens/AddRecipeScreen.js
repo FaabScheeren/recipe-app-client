@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +5,6 @@ import { View, ScrollView, Text, Picker, Switch } from "react-native";
 import { Input, Button, Image } from "react-native-elements";
 import { addRecipeThunk, getCategoriesThunk } from "../store/recipes/actions";
 import { categoriesSelector } from "../store/recipes/selectors";
-
 
 function AddRecipeScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -27,14 +25,11 @@ function AddRecipeScreen({ navigation }) {
   const [ingredient, setIngredient] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
 
-  console.log("PUBLIC?", is_public);
-
   // Add step or ingredient to the arrays
   const submitHandler = (setArray, array, item, setItem) => {
     setArray([...array, item]);
     setItem("");
   };
-
 
   // Adding recipe to database
 
