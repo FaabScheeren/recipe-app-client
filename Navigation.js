@@ -11,6 +11,7 @@ import HomeScreen from "./src/screens/HomeScreen";
 import WhiteScreen from "./src/screens/WhiteScreen";
 import RecipeDetailsScreen from "./src/screens/RecipeDetailsScreen";
 import AddRecipeScreen from "./src/screens/AddRecipeScreen";
+import AccountScreen from "./src/screens/AccountScreen";
 import { hide } from "expo/build/launch/SplashScreen";
 
 import { selectToken } from "./src/store/user/selector";
@@ -39,7 +40,7 @@ export default function Navigation() {
         initialRouteName="Signup"
         screenOptions={{
           headerStyle: {
-            backgroundColor: "#f4511e",
+            backgroundColor: "#95c6b1",
           },
           headerTintColor: "#fff",
           headerTitleAlign: "center",
@@ -72,6 +73,11 @@ export default function Navigation() {
               component={RecipeDetailsScreen}
             />
             <Stack.Screen name="AddRecipe" component={AddRecipeScreen} />
+            <Stack.Screen
+              name="Account"
+              component={AccountScreen}
+              options={({ route }) => ({ title: route.params.name })}
+            />
           </>
         )}
       </Stack.Navigator>

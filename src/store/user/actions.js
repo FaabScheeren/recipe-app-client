@@ -15,6 +15,13 @@ const signout = () => {
   };
 };
 
+const storeUserCategories = (categories) => {
+  return {
+    type: "add_user_categories",
+    payload: categories,
+  };
+};
+
 export const signupThunk = (firstName, lastName, email, password) => {
   return async (dispatch, getState) => {
     try {
@@ -57,6 +64,26 @@ export const signoutThunk = () => {
     await AsyncStorage.removeItem("token");
     dispatch(signout());
     dispatch(appDoneLoading());
+  };
+};
+
+export const getUserCategories = () => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+    try {
+      const response = await recipeApi.get("/user-categories", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // console.log(response.data);
+      dispatch(storeUserCategories(response.data));
+      // const recipeState = getState().user;
+      // console.log("Recipe state after categorie", recipeState);
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 

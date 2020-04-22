@@ -12,9 +12,6 @@ function RecipeDetailsScreen({ navigation, route }) {
   const selectDetails = useSelector(recipeDetailsSelector);
   const { recipeId } = route.params;
 
-  console.log("recipe id", recipeId);
-  console.log("recipe detail", selectDetails);
-
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
   }, [dispatch]);
