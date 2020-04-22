@@ -7,7 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { Image, Button } from "react-native-elements";
+import { Image } from "react-native-elements";
 import { recipeSelector } from "../store/recipes/selectors";
 import { selectUser } from "../store/user/selector";
 import { getRecipes } from "../store/recipes/actions";
@@ -27,20 +27,6 @@ function HomeScreen({ navigation }) {
 
   return (
     <>
-      <Text>Home screen</Text>
-      <Button title="Sign out" onPress={() => dispatch(signoutThunk())} />
-      <Button
-        title="Add recipe"
-        onPress={() => navigation.navigate("AddRecipe")}
-      />
-      <Button
-        title="Account"
-        onPress={() =>
-          navigation.navigate("Account", {
-            name: `${user.first_name} ${user.last_name}`,
-          })
-        }
-      />
       <FlatList
         data={selectRecipes}
         renderItem={({ item }) => (

@@ -1,9 +1,17 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+// import { FontAwesome } from "@expo/vector-icons";
+// import Ionicons from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/FontAwesome";
+import IconAnt from "react-native-vector-icons/AntDesign";
+import { Button } from "react-native";
 
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomNavigator } from "@react-navigation/bottom-tabs";
+import {
+  createBottomNavigator,
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
 
 import SignupScreen from "./src/screens/SignupScreen";
 import SigninScreen from "./src/screens/SigninScreen";
@@ -20,6 +28,78 @@ import { selectAppLoading } from "./src/store/appState/selectors";
 import { tryLocalLogin } from "./src/store/user/actions";
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function Home() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+        title="Home"
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: "Home",
+          tabBarIcon: ({ tintColor }) => (
+            <Icon name="home" size={25} color="#95c6b1" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        title="Add recipe"
+        name="Addrecipes"
+        component={AddRecipeScreen}
+        options={{
+          title: "Add recipe",
+          headerTitle: "Add recipe",
+          tabBarIcon: ({ tintColor }) => (
+            <Icon name="plus-square" size={25} color="#95c6b1" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        title="Account"
+        name="Account"
+        component={AccountScreen}
+        options={{
+          title: "Account",
+          tabBarIcon: ({ tintColor }) => (
+            <Icon name="user" size={25} color="#95c6b1" />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+function getHeaderTitle(route) {
+  const routeName = route.state
+    ? route.state.routes[route.state.index].name
+    : route.params?.screen || "Home";
+
+  switch (routeName) {
+    case "Home":
+      return "Home";
+    case "Addrecipes":
+      return "Add recipe";
+    case "Account":
+      return "Account";
+  }
+}
+
+function getHeaderRight(route) {
+  const routeName = route.state
+    ? route.state.routes[route.state.index].name
+    : route.params?.screen || "Home";
+
+  switch (routeName) {
+    case "Home":
+      return null;
+    case "Addrecipes":
+      return null;
+    case "Account":
+      return <IconAnt name="logout" size={25} color="#fff" />;
+  }
+}
 
 export default function Navigation() {
   const dispatch = useDispatch();
@@ -67,16 +147,17 @@ export default function Navigation() {
           </>
         ) : (
           <>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={({ route }) => ({
+                headerTitle: getHeaderTitle(route),
+                headerRight: () => getHeaderRight(route),
+              })}
+            />
             <Stack.Screen
               name="RecipeDetails"
               component={RecipeDetailsScreen}
-            />
-            <Stack.Screen name="AddRecipe" component={AddRecipeScreen} />
-            <Stack.Screen
-              name="Account"
-              component={AccountScreen}
-              options={({ route }) => ({ title: route.params.name })}
             />
           </>
         )}
@@ -84,3 +165,8 @@ export default function Navigation() {
     </NavigationContainer>
   );
 }
+// <Button
+//           onPress={() => alert("This is a button!")}
+//           title="Info"
+//           color="#fff"
+//         />
