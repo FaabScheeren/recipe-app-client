@@ -2,8 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import { Card, Image } from "react-native-elements";
-import { categoriesSelector } from "../store/recipes/selectors";
-import { selectUser, selectUserCategories } from "../store/user/selector";
+import { selectUserCategories } from "../store/user/selector";
 
 function RecipeOverviewScreen({ navigation, route }) {
   const { categoryId } = route.params;
@@ -22,7 +21,7 @@ function RecipeOverviewScreen({ navigation, route }) {
     return category.id === categoryId;
   });
 
-  console.log("Current category", currentCategory);
+  // console.log("Current category", currentCategory);
 
   return (
     <View>

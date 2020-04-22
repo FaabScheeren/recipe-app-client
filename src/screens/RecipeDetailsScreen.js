@@ -4,17 +4,30 @@ import { Image, Button, Divider, List, ListItem } from "react-native-elements";
 import { View, Text, StyleSheet } from "react-native";
 import { getRecipeDetails } from "../store/recipes/actions";
 import { recipeDetailsSelector } from "../store/recipes/selectors";
+import { selectUser } from "../store/user/selector";
 import { FontAwesome } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 function RecipeDetailsScreen({ navigation, route }) {
   const dispatch = useDispatch();
+  const selectCurrentUser = useSelector(selectUser);
   const selectDetails = useSelector(recipeDetailsSelector);
   const { recipeId } = route.params;
 
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
   }, [dispatch]);
+
+  if (selectDetails.userId === selectCurrentUser.id) {
+    navigation.setOptions({
+      headerRight: () => <Icon name="edit" size={25} color="#fff" />,
+    });
+  }
+
+  // console.log("user", selectCurrentUser);
+  // console.log("RECIPE DETAILS IN DETAILSSCREEN", selectDetails.userId);
+  // console.log("RECIPE DETAILS IN ", selectCurrentUser.id);
 
   return (
     selectDetails && (

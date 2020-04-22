@@ -155,6 +155,7 @@ export default function Navigation() {
             />
             <Stack.Screen
               name="RecipeDetails"
+              title="Recipe"
               component={RecipeDetailsScreen}
             />
             <Stack.Screen
