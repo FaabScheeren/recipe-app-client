@@ -21,6 +21,13 @@ const storeRecipe = (recipe) => {
   };
 };
 
+const storeCategories = (categories) => {
+  return {
+    type: "save_categories",
+    payload: categories,
+  };
+};
+
 export const getRecipes = () => {
   return async (dispatch, getState) => {
     const token = getState().user.token;
@@ -89,6 +96,23 @@ export const addRecipeThunk = (
 
       dispatch(storeRecipe(response.data));
       const recipeState = getState().recipes.recipes;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const getCategoriesThunk = () => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+    try {
+      const response = await recipeApi("/recipes/categories", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("RESPONSE", response.data);
+      dispatch(storeCategories(response.data));
     } catch (e) {
       console.log(e);
     }

@@ -1,6 +1,7 @@
 const initialState = {
   recipeDetails: null,
   recipes: [],
+  categories: [],
 };
 
 export default recipesReducer = (state = initialState, action) => {
@@ -11,6 +12,8 @@ export default recipesReducer = (state = initialState, action) => {
       return { ...state, recipeDetails: { ...action.payload } };
     case "add_recipe":
       return { ...state, recipes: [...state.recipes, action.payload] };
+    case "save_categories":
+      return { ...state, categories: action.payload };
     default:
       return state;
   }

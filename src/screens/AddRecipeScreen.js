@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { View, Text, Picker } from "react-native";
 import { Input, Button } from "react-native-elements";
-import { addRecipeThunk } from "../store/recipes/actions";
+import { addRecipeThunk, getCategoriesThunk } from "../store/recipes/actions";
+import { categoriesSelector } from "../store/recipes/selectors";
 
 function AddRecipeScreen({ navigation }) {
   const dispatch = useDispatch();
+  const selectCategories = useSelector(categoriesSelector);
+
+  // console.log("Categories", selectCategories);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -22,8 +26,11 @@ function AddRecipeScreen({ navigation }) {
     setItem("");
   };
 
+  useEffect(() => {
+    dispatch(getCategoriesThunk());
+  }, [dispatch]);
+
   const handleSubmit = () => {
-    console.log("Clicked");
     dispatch(
       addRecipeThunk(
         title,
@@ -58,6 +65,7 @@ function AddRecipeScreen({ navigation }) {
         value={step}
         onChangeText={(text) => setStep(text)}
         label="Steps"
+        blurOnSubmit={false}
         onSubmitEditing={(event) =>
           submitHandler(setStepsArray, stepsArray, step, setStep)
         }
@@ -72,9 +80,15 @@ function AddRecipeScreen({ navigation }) {
         onValueChange={(item) => setCategory(item)}
       >
         <Picker.Item label="Choose a category" value="no value" />
-        <Picker.Item label="Desserts" value={1} />
-        <Picker.Item label="Pasta" value={2} />
-        <Picker.Item label="Lunch" value={3} />
+        {selectCategories.map((category) => {
+          return (
+            <Picker.Item
+              key={category.id}
+              label={category.name}
+              value={category.id}
+            />
+          );
+        })}
       </Picker>
 
       {ingredientsArray.map((ingredient) => {
@@ -85,6 +99,7 @@ function AddRecipeScreen({ navigation }) {
         value={ingredient}
         onChangeText={(text) => setIngredient(text)}
         label="Ingredients"
+        blurOnSubmit={false}
         onSubmitEditing={(event) =>
           submitHandler(
             setIngredientsArray,
