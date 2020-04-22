@@ -8,10 +8,7 @@ import { Button } from "react-native";
 
 import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import {
-  createBottomNavigator,
-  createBottomTabNavigator,
-} from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import SignupScreen from "./src/screens/SignupScreen";
 import SigninScreen from "./src/screens/SigninScreen";
@@ -110,9 +107,9 @@ export default function Navigation() {
     dispatch(tryLocalLogin());
   }, [dispatch]);
 
-  if (appState) {
-    return <WhiteScreen />;
-  }
+  // if (appState) {
+  //   return <WhiteScreen />;
+  // }
 
   return (
     <NavigationContainer>

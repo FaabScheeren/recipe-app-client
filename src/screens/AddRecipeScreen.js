@@ -1,9 +1,12 @@
+
 import React, { useState, useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
-import { View, Text, Picker } from "react-native";
-import { Input, Button } from "react-native-elements";
+import { View, ScrollView, Text, Picker, Switch } from "react-native";
+import { Input, Button, Image } from "react-native-elements";
 import { addRecipeThunk, getCategoriesThunk } from "../store/recipes/actions";
 import { categoriesSelector } from "../store/recipes/selectors";
+
 
 function AddRecipeScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -13,18 +16,27 @@ function AddRecipeScreen({ navigation }) {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [step, setStep] = useState("");
+  const [stepsArray, setStepsArray] = useState([]);
   const [cookingTime, setCookingTime] = useState("");
   const [category, setCategory] = useState("");
-  const [ingredient, setIngredient] = useState("");
-
   const [ingredientsArray, setIngredientsArray] = useState([]);
-  const [stepsArray, setStepsArray] = useState([]);
+  const [photo, setPhoto] = useState("");
+  const [is_public, setIs_public] = useState(false);
 
+  const [step, setStep] = useState("");
+  const [ingredient, setIngredient] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
+
+  console.log("PUBLIC?", is_public);
+
+  // Add step or ingredient to the arrays
   const submitHandler = (setArray, array, item, setItem) => {
     setArray([...array, item]);
     setItem("");
   };
+
+
+  // Adding recipe to database
 
   useEffect(() => {
     dispatch(getCategoriesThunk());
@@ -38,20 +50,78 @@ function AddRecipeScreen({ navigation }) {
         stepsArray,
         cookingTime,
         category,
-        ingredientsArray
+        ingredientsArray,
+        photo,
+        is_public
       )
     );
     navigation.navigate("Home");
   };
 
+  // Image picker
+  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dcmi604u7/upload";
+  const presetName = "wkfzg6yb";
+
+  const openImagePickerAsync = async () => {
+    const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+
+      base64: true,
+    });
+
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+
+    setSelectedImage({ localUri: pickerResult.uri });
+
+    const base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
+
+    const data = {
+      file: base64Img,
+      upload_preset: presetName,
+    };
+
+    fetch(CLOUDINARY_URL, {
+      body: JSON.stringify(data),
+      headers: {
+        "content-type": "application/json",
+      },
+      method: "POST",
+    })
+      .then(async (r) => {
+        const data = await r.json();
+
+        setPhoto(data.url);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
-    <View>
+    <ScrollView>
+      <Image
+        source={{
+          uri: photo
+            ? `${photo}`
+            : "https://www.cowgirlcontractcleaning.com/wp-content/uploads/sites/360/2018/05/placeholder-img-1.jpg",
+        }}
+        style={{ width: 420, height: 420 }}
+      />
+
+      <Button title="Add image" onPress={() => openImagePickerAsync()} />
       <Input onChangeText={(text) => setTitle(text)} label="Title" />
       <Input
         onChangeText={(text) => setDescription(text)}
         label="Description"
       />
-
       {stepsArray.map((step, index) => {
         return (
           <View key={step}>
@@ -60,7 +130,6 @@ function AddRecipeScreen({ navigation }) {
           </View>
         );
       })}
-
       <Input
         value={step}
         onChangeText={(text) => setStep(text)}
@@ -75,6 +144,7 @@ function AddRecipeScreen({ navigation }) {
         label="Cooking time"
         keyboardType="numeric"
       />
+      <Text>Choose a category for your recipe.</Text>
       <Picker
         selectedValue={category}
         onValueChange={(item) => setCategory(item)}
@@ -90,11 +160,9 @@ function AddRecipeScreen({ navigation }) {
           );
         })}
       </Picker>
-
       {ingredientsArray.map((ingredient) => {
         return <Text key={ingredient}>{ingredient}</Text>;
       })}
-
       <Input
         value={ingredient}
         onChangeText={(text) => setIngredient(text)}
@@ -109,8 +177,13 @@ function AddRecipeScreen({ navigation }) {
           )
         }
       />
+      <Text>Do you want to show this recipe on your public profile?</Text>
+      <Switch
+        value={is_public}
+        onValueChange={() => setIs_public(!is_public)}
+      />
       <Button title="Add recipe" onPress={() => handleSubmit()} />
-    </View>
+    </ScrollView>
   );
 }
 

@@ -71,7 +71,9 @@ export const addRecipeThunk = (
   stepsArray,
   cookingTime,
   category,
-  ingredientsArray
+  ingredientsArray,
+  photo,
+  is_public
 ) => {
   return async (dispatch, getState) => {
     const token = getState().user.token;
@@ -86,6 +88,8 @@ export const addRecipeThunk = (
           cookingTime,
           category,
           ingredientsArray,
+          photo,
+          is_public,
         },
         {
           headers: {
