@@ -4,24 +4,59 @@ import { useDispatch, useSelector } from "react-redux";
 import { View, ScrollView, Text, Picker, Switch } from "react-native";
 import { Input, Button, Image } from "react-native-elements";
 import { addRecipeThunk, getCategoriesThunk } from "../store/recipes/actions";
+import { getRecipeDetails } from "../store/recipes/actions";
 import { categoriesSelector } from "../store/recipes/selectors";
+import { recipeDetailsSelector } from "../store/recipes/selectors";
 
-function AddRecipeScreen({ navigation }) {
+function AddRecipeScreen({ navigation, route }) {
   const dispatch = useDispatch();
   const selectCategories = useSelector(categoriesSelector);
+  const selectDetails = useSelector(recipeDetailsSelector);
+  const { recipeId } = route.params;
 
-  const [title, setTitle] = useState(titleParam);
-  const [description, setDescription] = useState("");
-  const [stepsArray, setStepsArray] = useState([]);
-  const [cookingTime, setCookingTime] = useState("");
-  const [category, setCategory] = useState("");
-  const [ingredientsArray, setIngredientsArray] = useState([]);
-  const [photo, setPhoto] = useState("");
-  const [is_public, setIs_public] = useState(false);
+  // console.log("Recipe details", selectDetails);
+
+  const defaultStepsArray = selectDetails.steps.map((step) => {
+    return step.description;
+  });
+
+  const defaultIngredientsArray = selectDetails.ingredients.map(
+    (ingredient) => {
+      return ingredient.product_name;
+    }
+  );
+
+  console.log("Default steps", defaultStepsArray);
+
+  const [title, setTitle] = useState(selectDetails.title);
+  const [description, setDescription] = useState(selectDetails.description);
+  // const [stepsArray, setStepsArray] = useState(selectDetails.steps);
+  const [stepsArray, setStepsArray] = useState(defaultStepsArray);
+  const [cookingTime, setCookingTime] = useState(selectDetails.cooking_time);
+  const time = cookingTime.toString();
+  const [category, setCategory] = useState(selectDetails.categoryId);
+  // const [ingredientsArray, setIngredientsArray] = useState(
+  //   selectDetails.ingredients
+  // );
+  const [ingredientsArray, setIngredientsArray] = useState(
+    defaultIngredientsArray
+  );
+  const [photo, setPhoto] = useState(selectDetails.media[0].file_name);
+  const [is_public, setIs_public] = useState(selectDetails.is_public);
 
   const [step, setStep] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
+
+  console.log("INGREDIENTS", selectDetails.ingredients);
+
+  useEffect(() => {
+    dispatch(getRecipeDetails(recipeId));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getCategoriesThunk());
+  }, [dispatch]);
 
   // Add step or ingredient to the arrays
   const submitHandler = (setArray, array, item, setItem) => {
@@ -30,11 +65,6 @@ function AddRecipeScreen({ navigation }) {
   };
 
   // Adding recipe to database
-
-  useEffect(() => {
-    dispatch(getCategoriesThunk());
-  }, [dispatch]);
-
   const handleSubmit = () => {
     dispatch(
       addRecipeThunk(
@@ -110,10 +140,16 @@ function AddRecipeScreen({ navigation }) {
       />
 
       <Button title="Add image" onPress={() => openImagePickerAsync()} />
-      <Input onChangeText={(text) => setTitle(text)} label="Title" />
+      <Input
+        onChangeText={(text) => setTitle(text)}
+        label="Title"
+        value={title}
+      />
       <Input
         onChangeText={(text) => setDescription(text)}
         label="Description"
+        value={description}
+        multiline={true}
       />
       {stepsArray.map((step, index) => {
         return (
@@ -135,6 +171,8 @@ function AddRecipeScreen({ navigation }) {
       <Input
         onChangeText={(text) => setCookingTime(text)}
         label="Cooking time"
+        value={time}
+        type={Number}
         keyboardType="numeric"
       />
       <Text>Choose a category for your recipe.</Text>

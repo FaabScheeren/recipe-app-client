@@ -115,7 +115,7 @@ export const getCategoriesThunk = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("RESPONSE", response.data);
+      // console.log("RESPONSE", response.data);
       dispatch(storeCategories(response.data));
     } catch (e) {
       console.log(e);

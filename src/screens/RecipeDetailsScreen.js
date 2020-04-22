@@ -6,7 +6,7 @@ import { getRecipeDetails } from "../store/recipes/actions";
 import { recipeDetailsSelector } from "../store/recipes/selectors";
 import { selectUser } from "../store/user/selector";
 import { FontAwesome } from "@expo/vector-icons";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 function RecipeDetailsScreen({ navigation, route }) {
@@ -19,15 +19,23 @@ function RecipeDetailsScreen({ navigation, route }) {
     dispatch(getRecipeDetails(recipeId));
   }, [dispatch]);
 
-  if (selectDetails.userId === selectCurrentUser.id) {
-    navigation.setOptions({
-      headerRight: () => <Icon name="edit" size={25} color="#fff" />,
-    });
-  }
-
-  // console.log("user", selectCurrentUser);
-  // console.log("RECIPE DETAILS IN DETAILSSCREEN", selectDetails.userId);
-  // console.log("RECIPE DETAILS IN ", selectCurrentUser.id);
+  // if (selectDetails !== {} && selectCurrentUser !== {}) {
+  //   if (selectDetails.userId === selectCurrentUser.id) {
+  navigation.setOptions({
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Edit", {
+            recipeId,
+          })
+        }
+      >
+        <Icon name="edit" size={25} color="#fff" />
+      </TouchableOpacity>
+    ),
+  });
+  //   }
+  // }
 
   return (
     selectDetails && (
