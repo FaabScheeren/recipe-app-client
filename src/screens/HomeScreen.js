@@ -11,7 +11,6 @@ import { Image } from "react-native-elements";
 import { recipeSelector } from "../store/recipes/selectors";
 import { selectUser } from "../store/user/selector";
 import { getRecipes } from "../store/recipes/actions";
-import { signoutThunk } from "../store/user/actions";
 import { FontAwesome } from "@expo/vector-icons";
 
 function HomeScreen({ navigation }) {

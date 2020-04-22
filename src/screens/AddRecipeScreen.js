@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import * as ImagePicker from "expo-image-picker";
 import { useDispatch } from "react-redux";
-import { View, Text, Picker } from "react-native";
-import { Input, Button } from "react-native-elements";
+import { View, ScrollView, Text, Picker } from "react-native";
+import { Input, Button, Image } from "react-native-elements";
 import { addRecipeThunk } from "../store/recipes/actions";
 
 function AddRecipeScreen({ navigation }) {
@@ -13,9 +14,14 @@ function AddRecipeScreen({ navigation }) {
   const [cookingTime, setCookingTime] = useState("");
   const [category, setCategory] = useState("");
   const [ingredient, setIngredient] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
+  const [photo, setPhoto] = useState("");
 
   const [ingredientsArray, setIngredientsArray] = useState([]);
   const [stepsArray, setStepsArray] = useState([]);
+
+  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dcmi604u7/upload";
+  const presetName = "wkfzg6yb";
 
   const submitHandler = (setArray, array, item, setItem) => {
     setArray([...array, item]);
@@ -37,14 +43,66 @@ function AddRecipeScreen({ navigation }) {
     navigation.navigate("Home");
   };
 
+  const openImagePickerAsync = async () => {
+    const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+
+      base64: true,
+    });
+
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+
+    setSelectedImage({ localUri: pickerResult.uri });
+
+    const base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
+
+    const data = {
+      file: base64Img,
+      upload_preset: presetName,
+    };
+
+    fetch(CLOUDINARY_URL, {
+      body: JSON.stringify(data),
+      headers: {
+        "content-type": "application/json",
+      },
+      method: "POST",
+    })
+      .then(async (r) => {
+        const data = await r.json();
+
+        setPhoto(data.url);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
-    <View>
+    <ScrollView>
+      <Image
+        source={{
+          uri: photo
+            ? `${photo}`
+            : "https://www.cowgirlcontractcleaning.com/wp-content/uploads/sites/360/2018/05/placeholder-img-1.jpg",
+        }}
+        style={{ width: 420, height: 420 }}
+      />
+
+      <Button title="Add image" onPress={() => openImagePickerAsync()} />
       <Input onChangeText={(text) => setTitle(text)} label="Title" />
       <Input
         onChangeText={(text) => setDescription(text)}
         label="Description"
       />
-
       {stepsArray.map((step, index) => {
         return (
           <View key={step}>
@@ -53,7 +111,6 @@ function AddRecipeScreen({ navigation }) {
           </View>
         );
       })}
-
       <Input
         value={step}
         onChangeText={(text) => setStep(text)}
@@ -68,6 +125,7 @@ function AddRecipeScreen({ navigation }) {
         keyboardType="numeric"
       />
       <Picker
+        label="Category"
         selectedValue={category}
         onValueChange={(item) => setCategory(item)}
       >
@@ -76,11 +134,9 @@ function AddRecipeScreen({ navigation }) {
         <Picker.Item label="Pasta" value={2} />
         <Picker.Item label="Lunch" value={3} />
       </Picker>
-
       {ingredientsArray.map((ingredient) => {
         return <Text key={ingredient}>{ingredient}</Text>;
       })}
-
       <Input
         value={ingredient}
         onChangeText={(text) => setIngredient(text)}
@@ -95,7 +151,7 @@ function AddRecipeScreen({ navigation }) {
         }
       />
       <Button title="Add recipe" onPress={() => handleSubmit()} />
-    </View>
+    </ScrollView>
   );
 }
 
