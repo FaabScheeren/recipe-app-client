@@ -46,12 +46,11 @@ function RecipeOverviewScreen({ navigation, route }) {
             <Card>
               <Image
                 source={{
-                  uri:
-                    "https://static.ah.nl/static/recepten/img_071780_1600x_JPG.jpg",
+                  uri: `${item.media[0].file_name}`,
                 }}
                 style={{ height: 145, width: 145 }}
               />
-              <Text>{item.title}</Text>
+              <Text style={{ width: 145 }}>{item.title}</Text>
             </Card>
           </TouchableOpacity>
         )}
