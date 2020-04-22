@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 // import { FontAwesome } from "@expo/vector-icons";
 // import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/FontAwesome";
+import IconAnt from "react-native-vector-icons/AntDesign";
+import { Button } from "react-native";
 
 import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -84,6 +86,21 @@ function getHeaderTitle(route) {
   }
 }
 
+function getHeaderRight(route) {
+  const routeName = route.state
+    ? route.state.routes[route.state.index].name
+    : route.params?.screen || "Home";
+
+  switch (routeName) {
+    case "Home":
+      return null;
+    case "Addrecipes":
+      return null;
+    case "Account":
+      return <IconAnt name="logout" size={25} color="#fff" />;
+  }
+}
+
 export default function Navigation() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
@@ -135,6 +152,7 @@ export default function Navigation() {
               component={Home}
               options={({ route }) => ({
                 headerTitle: getHeaderTitle(route),
+                headerRight: () => getHeaderRight(route),
               })}
             />
             <Stack.Screen
@@ -147,3 +165,8 @@ export default function Navigation() {
     </NavigationContainer>
   );
 }
+// <Button
+//           onPress={() => alert("This is a button!")}
+//           title="Info"
+//           color="#fff"
+//         />
