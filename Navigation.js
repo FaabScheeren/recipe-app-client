@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+// import { FontAwesome } from "@expo/vector-icons";
+// import Ionicons from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   createBottomNavigator,
@@ -32,19 +35,35 @@ function Home() {
         title="Home"
         name="Home"
         component={HomeScreen}
-        options={{ title: "Home" }}
+        options={{
+          title: "Home",
+          tabBarIcon: ({ tintColor }) => (
+            <Icon name="home" size={25} color="#95c6b1" />
+          ),
+        }}
       />
       <Tab.Screen
         title="Add recipe"
         name="Addrecipes"
         component={AddRecipeScreen}
-        options={{ title: "Add recipe", headerTitle: "Add recipe" }}
+        options={{
+          title: "Add recipe",
+          headerTitle: "Add recipe",
+          tabBarIcon: ({ tintColor }) => (
+            <Icon name="plus-square" size={25} color="#95c6b1" />
+          ),
+        }}
       />
       <Tab.Screen
         title="Account"
         name="Account"
         component={AccountScreen}
-        options={{ title: "Account" }}
+        options={{
+          title: "Account",
+          tabBarIcon: ({ tintColor }) => (
+            <Icon name="user" size={25} color="#95c6b1" />
+          ),
+        }}
       />
     </Tab.Navigator>
   );
