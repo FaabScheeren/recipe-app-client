@@ -10,26 +10,24 @@ function AddRecipeScreen({ navigation }) {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [step, setStep] = useState("");
+  const [stepsArray, setStepsArray] = useState([]);
   const [cookingTime, setCookingTime] = useState("");
   const [category, setCategory] = useState("");
-  const [ingredient, setIngredient] = useState("");
-  const [selectedImage, setSelectedImage] = useState("");
+  const [ingredientsArray, setIngredientsArray] = useState([]);
   const [photo, setPhoto] = useState("");
 
-  const [ingredientsArray, setIngredientsArray] = useState([]);
-  const [stepsArray, setStepsArray] = useState([]);
+  const [step, setStep] = useState("");
+  const [ingredient, setIngredient] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
 
-  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dcmi604u7/upload";
-  const presetName = "wkfzg6yb";
-
+  // Add step or ingredient to the arrays
   const submitHandler = (setArray, array, item, setItem) => {
     setArray([...array, item]);
     setItem("");
   };
 
+  // Adding recipe to database
   const handleSubmit = () => {
-    console.log("Clicked");
     dispatch(
       addRecipeThunk(
         title,
@@ -37,11 +35,16 @@ function AddRecipeScreen({ navigation }) {
         stepsArray,
         cookingTime,
         category,
-        ingredientsArray
+        ingredientsArray,
+        photo
       )
     );
     navigation.navigate("Home");
   };
+
+  // Image picker
+  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dcmi604u7/upload";
+  const presetName = "wkfzg6yb";
 
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
