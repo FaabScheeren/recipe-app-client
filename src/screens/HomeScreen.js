@@ -16,6 +16,7 @@ import { selectAppLoading } from "../store/appState/selectors";
 import { getRecipes } from "../store/recipes/actions";
 import { FontAwesome } from "@expo/vector-icons";
 import HeaderHomepage from "../components/HeaderHomepage";
+import { colors, spaces, fonts, dimensions } from "../styles/base";
 
 function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -68,7 +69,7 @@ function HomeScreen({ navigation }) {
             >
               <Image
                 source={{ uri: item.media[0].file_name }}
-                style={{ width: 420, height: 420 }}
+                style={{ alignSelf: "stretch", height: 420 }}
               />
               <View>
                 <Text
@@ -98,5 +99,7 @@ function HomeScreen({ navigation }) {
     </>
   );
 }
+
+const styles = StyleSheet.create({});
 
 export default HomeScreen;

@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, useWindowDimensions } from "react-native";
 
 export const colors = {
   primary: "#95c6b1",
@@ -8,9 +8,9 @@ export const colors = {
 
 export const spaces = {
   sm: 10,
-  md: 20,
-  lg: 30,
-  xl: 40,
+  md: 15,
+  lg: 20,
+  xl: 30,
 };
 
 export const fonts = {

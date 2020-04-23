@@ -47,7 +47,7 @@ function AccountScreen({ navigation }) {
               })
             }
           >
-            <Card>
+            <Card containerStyle={styles.card}>
               <Image
                 source={{
                   uri:
@@ -90,20 +90,25 @@ const styles = StyleSheet.create({
     borderRadius: 200 / 2,
     borderWidth: 0.5,
   },
-  cardImage: { height: 145, width: 145 },
+  cardImage: { height: 175, width: 175 },
   card: {
     padding: 0,
+    borderColor: colors.primary,
+    borderWidth: 0.4,
   },
   cardTitle: {
     fontFamily: fonts.subHeader2,
     fontSize: fonts.md,
     marginVertical: spaces.sm,
+    paddingHorizontal: 15,
   },
   cardSubTitle: {
     fontFamily: fonts.subHeader,
     fontSize: fonts.sm,
+    paddingHorizontal: 15,
+    paddingBottom: 15,
   },
-  contentContainerStyle: { paddingBottom: 20 },
+  contentContainerStyle: { paddingBottom: spaces.lg },
 });
 
 export default AccountScreen;
