@@ -6,22 +6,18 @@ import { selectUserCategories } from "../store/user/selector";
 
 function RecipeOverviewScreen({ navigation, route }) {
   const { categoryId } = route.params;
-  // console.log("Category id", categoryId);
 
-  // const categories = useSelector(categoriesSelector);
-  // const user = useSelector(selectUser);
   const categories = useSelector(selectUserCategories);
-  // console.log("CATEGORIES", categories);
-
-  // const categoryRecipes = categories.filter((recipe) => {
-
-  // })
 
   const currentCategory = categories.find((category) => {
     return category.id === categoryId;
   });
 
-  // console.log("Current category", currentCategory);
+  // console.log("Current category", currentCategory.name);
+
+  navigation.setOptions({
+    title: `${currentCategory.name}`,
+  });
 
   return (
     <View>

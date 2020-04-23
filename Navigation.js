@@ -156,14 +156,19 @@ export default function Navigation() {
             />
             <Stack.Screen
               name="RecipeDetails"
-              title="Recipe"
               component={RecipeDetailsScreen}
+              options={{ title: "Recipe" }}
             />
             <Stack.Screen
+              options={{ title: "My recipes" }}
               name="RecipeOverview"
               component={RecipeOverviewScreen}
             />
-            <Stack.Screen name="Edit" component={EditScreen} />
+            <Stack.Screen
+              name="Edit"
+              component={EditScreen}
+              options={{ title: "Edit recipe" }}
+            />
           </>
         )}
       </Stack.Navigator>
