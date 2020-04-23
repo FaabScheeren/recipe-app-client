@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import {
   View,
@@ -41,7 +42,7 @@ function HomeScreen({ navigation }) {
               />
               <View>
                 <Text>{item.title}</Text>
-                <Text>{item.createdAt}</Text>
+                <Text>{moment(item.createdAt).fromNow()}</Text>
                 <Text>
                   {item.user.first_name} {item.user.last_name}
                 </Text>
