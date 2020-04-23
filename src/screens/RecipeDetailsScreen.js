@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { Image, Button, Divider, List, ListItem } from "react-native-elements";
 import { View, Text, StyleSheet } from "react-native";
@@ -17,7 +18,7 @@ function RecipeDetailsScreen({ navigation, route }) {
 
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
-  }, [dispatch, getRecipeDetails]);
+  }, []);
 
   const userId = selectDetails ? selectDetails.userId : -1;
 
@@ -47,7 +48,7 @@ function RecipeDetailsScreen({ navigation, route }) {
         <Text>{selectDetails.title}</Text>
         <Text>{selectDetails.category.name}</Text>
         <Divider style={{ margin: 20 }} />
-        <Text>{selectDetails.createdAt}</Text>
+        <Text>{moment(selectDetails.createdAt).fromNow()}</Text>
         <Text>
           {selectDetails.user.first_name} {selectDetails.user.last_name}
         </Text>

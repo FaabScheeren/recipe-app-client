@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import {
   View,
@@ -6,21 +7,51 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { Image } from "react-native-elements";
 import { recipeSelector } from "../store/recipes/selectors";
-import { selectUser } from "../store/user/selector";
+import { selectUser, theState } from "../store/user/selector";
+import { selectAppLoading } from "../store/appState/selectors";
 import { getRecipes } from "../store/recipes/actions";
 import { FontAwesome } from "@expo/vector-icons";
+import HeaderHomepage from "../components/HeaderHomepage";
 
 function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const selectRecipes = useSelector(recipeSelector);
-  const user = useSelector(selectUser);
+  const state = useSelector(selectAppLoading);
 
   useEffect(() => {
     dispatch(getRecipes());
   }, [dispatch]);
+
+  console.log("State", state);
+
+  const Footer = () => {
+    if (!selectAppLoading) return null;
+
+    return (
+      <View
+        style={{
+          position: "relative",
+          width: 30,
+          height: 30,
+          paddingVertical: 20,
+          borderTopWidth: 1,
+          marginTop: 10,
+          marginBottom: 10,
+          borderColor: "Black",
+        }}
+      >
+        <ActivityIndicator animating size="large" />
+      </View>
+    );
+  };
+
+  const getRecipesCall = () => {
+    dispatch(getRecipes());
+  };
 
   return (
     <>
@@ -41,7 +72,7 @@ function HomeScreen({ navigation }) {
               />
               <View>
                 <Text>{item.title}</Text>
-                <Text>{item.createdAt}</Text>
+                <Text>{moment(item.createdAt).fromNow()}</Text>
                 <Text>
                   {item.user.first_name} {item.user.last_name}
                 </Text>
@@ -55,6 +86,10 @@ function HomeScreen({ navigation }) {
           </View>
         )}
         keyExtractor={(recipe) => recipe.id.toString()}
+        ListHeaderComponent={<HeaderHomepage />}
+        ListFooterComponent={Footer()}
+        onEndReached={() => getRecipesCall()}
+        onEndReachedThreshold={0}
       />
     </>
   );

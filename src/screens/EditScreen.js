@@ -26,7 +26,7 @@ function AddRecipeScreen({ navigation, route }) {
     }
   );
 
-  console.log("Default steps", selectDetails.ingredients);
+  // console.log("Default steps", selectDetails.ingredients);
 
   const [id, setId] = useState(selectDetails.id);
   const [title, setTitle] = useState(selectDetails.title);
@@ -90,9 +90,12 @@ function AddRecipeScreen({ navigation, route }) {
         category,
         ingredientsArray,
         photo,
-        is_public
+        is_public,
+        // navigation,
+        recipeId
       )
     );
+    // getRecipeDetails(recipeId);
     navigation.navigate("RecipeDetails", {
       recipeId,
     });
