@@ -71,10 +71,10 @@ function HomeScreen({ navigation }) {
               />
               <Text style={styles.title}>{item.title}</Text>
               <View>
-                <Text style={styles.text}>
+                <Text style={styles.subTitle}>
                   {moment(item.createdAt).fromNow()}
                 </Text>
-                <Text style={styles.text}>
+                <Text style={styles.subTitle}>
                   {item.user.first_name} {item.user.last_name}
                 </Text>
               </View>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginTop: 10,
   },
-  text: {
+  subTitle: {
     fontFamily: fonts.subHeader,
     marginLeft: 10,
     marginBottom: 15,

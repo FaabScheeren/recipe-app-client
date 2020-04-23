@@ -9,6 +9,7 @@ import { selectUser } from "../store/user/selector";
 import { FontAwesome } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { colors, spaces, fonts, dimensions } from "../styles/base";
 
 function RecipeDetailsScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -43,63 +44,88 @@ function RecipeDetailsScreen({ navigation, route }) {
       <ScrollView>
         <Image
           source={{ uri: selectDetails.media[0].file_name }}
-          style={{ width: 420, height: 420 }}
+          style={styles.image}
         />
-        <Text>{selectDetails.title}</Text>
-        <Text>{selectDetails.category.name}</Text>
+        <Text style={styles.title}>{selectDetails.title}</Text>
+        <Text style={styles.subTitle}>{selectDetails.category.name}</Text>
         <Divider style={{ margin: 20 }} />
-        <Text>{moment(selectDetails.createdAt).fromNow()}</Text>
-        <Text>
+        <Text style={styles.subTitle}>
+          {moment(selectDetails.createdAt).fromNow()}
+        </Text>
+        <Text style={styles.subTitle}>
           {selectDetails.user.first_name} {selectDetails.user.last_name}
         </Text>
         <View>
-          <FontAwesome name="heart" style={styles.icons} />
-          <FontAwesome name="comment" style={styles.icons} />
-          <FontAwesome name="share" style={styles.icons} />
+          <FontAwesome name="heart" style={styles.icon} />
+          <FontAwesome name="comment" style={styles.icon} />
+          <FontAwesome name="share" style={styles.icon} />
         </View>
-        <Text style={styles.headerStyle}>Ingredients</Text>
+        <Text style={styles.subHeaderStyle}>Ingredients</Text>
         {selectDetails.ingredients.map((ingredient, index) => {
-          return <Text key={index}>- {ingredient.product_name}</Text>;
+          return (
+            <Text style={styles.list} key={index}>
+              - {ingredient.product_name}
+            </Text>
+          );
         })}
-        <Text style={styles.headerStyle}>Description</Text>
-        <Text>{selectDetails.description}</Text>
+        <Text style={styles.subHeaderStyle}>Description</Text>
+        <Text style={styles.text}>{selectDetails.description}</Text>
         <View>
           {selectDetails.steps.map((step, index) => {
             return (
               <View key={index + 1}>
-                <Text style={styles.stepHeaderStyle}>Step {index + 1}</Text>
-                <Text>{step.description}</Text>
+                <Text style={styles.stepTitleStyle}>Step {index + 1}</Text>
+                <Text style={styles.text}>{step.description}</Text>
               </View>
             );
           })}
         </View>
+        <View style={{ height: 50 }}></View>
       </ScrollView>
     )
   );
 }
 
 const styles = StyleSheet.create({
-  icons: {
+  title: {
+    fontFamily: fonts.header,
+    fontSize: fonts.lg,
+    marginHorizontal: spaces.sm,
+    marginTop: spaces.sm,
+  },
+  subTitle: {
+    fontFamily: fonts.subHeader,
+    marginLeft: 10,
+    marginBottom: 5,
+  },
+  subHeaderStyle: {
+    fontFamily: fonts.subHeader2,
+    // fontWeight: "bold",
+    fontSize: fonts.md,
+    marginHorizontal: spaces.sm,
+    marginVertical: spaces.md,
+  },
+  list: {
+    fontFamily: fonts.text,
+    fontSize: fonts.sm,
+    marginHorizontal: spaces.md,
+  },
+  text: {
+    fontFamily: fonts.text,
+    fontSize: fonts.sm,
+    marginHorizontal: spaces.sm,
+    marginBottom: spaces.md,
+  },
+  stepTitleStyle: {
+    fontFamily: fonts.subHeader2,
+    fontSize: fonts.sm,
+    marginHorizontal: spaces.sm,
+  },
+  image: { alignSelf: "stretch", height: 420 },
+  icon: {
     fontSize: 30,
-  },
-  headerStyle: {
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-  stepHeaderStyle: {
-    fontWeight: "bold",
+    color: colors.primary,
   },
 });
 
 export default RecipeDetailsScreen;
-
-// <Image
-// source={{ uri: selectDetails.media[0].file_name }}
-// style={{ width: 420, height: 420 }}
-// />
-// <Text>{selectDetails.title}</Text>
-// <Text>{selectDetails.category.name}</Text>
-// <Text>{selectDetails.createdAt}</Text>
-// <Text>
-// {selectDetails.user.first_name} {selectDetails.user.last_name}
-// </Text>
