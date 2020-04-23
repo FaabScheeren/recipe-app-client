@@ -13,7 +13,7 @@ function AccountScreen({ navigation }) {
 
   useEffect(() => {
     dispatch(getUserCategories());
-  }, [dispatch, getUserCategories]);
+  }, [dispatch]);
 
   return (
     <View>

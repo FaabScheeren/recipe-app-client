@@ -6,7 +6,7 @@ import { selectUserCategories } from "../store/user/selector";
 
 function RecipeOverviewScreen({ navigation, route }) {
   const { categoryId } = route.params;
-  console.log("Category id", categoryId);
+  // console.log("Category id", categoryId);
 
   // const categories = useSelector(categoriesSelector);
   // const user = useSelector(selectUser);

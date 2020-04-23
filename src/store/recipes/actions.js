@@ -1,4 +1,5 @@
 import recipeApi from "../../config/api";
+import { getUserCategories } from "../user/actions";
 
 const storeRecipes = (recipe) => {
   return {
@@ -133,7 +134,9 @@ export const changeRecipeThunk = (
   category,
   ingredientsArray,
   photo,
-  is_public
+  is_public,
+  // navigation,
+  recipeId
 ) => {
   return async (dispatch, getState) => {
     const token = getState().user.token;
@@ -157,6 +160,11 @@ export const changeRecipeThunk = (
         },
       }
     );
+    dispatch(getUserCategories());
+    dispatch(getRecipeDetails(recipeId));
+    // navigation.navigate("RecipeDetails", {
+    //   recipeId,
+    // });
   };
 };
 

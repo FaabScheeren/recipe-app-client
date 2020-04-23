@@ -18,7 +18,7 @@ function RecipeDetailsScreen({ navigation, route }) {
 
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
-  }, [dispatch, getRecipeDetails]);
+  }, []);
 
   const userId = selectDetails ? selectDetails.userId : -1;
 
