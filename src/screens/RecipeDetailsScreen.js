@@ -17,25 +17,25 @@ function RecipeDetailsScreen({ navigation, route }) {
 
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
-  }, [dispatch, getRecipeDetails()]);
+  }, [dispatch, getRecipeDetails]);
 
-  // if (selectDetails !== {} && selectCurrentUser !== {}) {
-  //   if (selectDetails.userId === selectCurrentUser.id) {
-  navigation.setOptions({
-    headerRight: () => (
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Edit", {
-            recipeId,
-          })
-        }
-      >
-        <Icon name="edit" size={25} color="#fff" />
-      </TouchableOpacity>
-    ),
-  });
-  //   }
-  // }
+  const userId = selectDetails ? selectDetails.userId : -1;
+
+  if (userId) {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Edit", {
+              recipeId,
+            })
+          }
+        >
+          <Icon name="edit" size={25} color="#fff" />
+        </TouchableOpacity>
+      ),
+    });
+  }
 
   return (
     selectDetails && (
