@@ -31,14 +31,32 @@ const storeCategories = (categories) => {
 export const getRecipes = () => {
   return async (dispatch, getState) => {
     const token = getState().user.token;
+    const recipesAmount =
+      getState().recipes.recipes.length === null
+        ? 0
+        : getState().recipes.recipes.length;
+
+    // const offset = getState().recipes.recipes.length;
+
+    // console.log("Offset", offset);
+
+    if (
+      recipesAmount >= getState().recipes.recipesCount &&
+      getState().recipes.recipesCount !== null
+    ) {
+      return;
+    }
 
     try {
-      const response = await recipeApi.get("/recipes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      // console.log("RESPONSE", response);
+      const response = await recipeApi.get(
+        `/recipes?limit=3&offset=${recipesAmount}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // console.log("RESPONSE", response.data);
 
       dispatch(storeRecipes(response.data));
     } catch (e) {

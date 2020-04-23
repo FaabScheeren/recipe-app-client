@@ -7,12 +7,14 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { Image } from "react-native-elements";
 import { recipeSelector } from "../store/recipes/selectors";
 import { selectUser } from "../store/user/selector";
 import { getRecipes } from "../store/recipes/actions";
 import { FontAwesome } from "@expo/vector-icons";
+import HeaderHomepage from "../components/HeaderHomepage";
 
 function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -22,6 +24,31 @@ function HomeScreen({ navigation }) {
   useEffect(() => {
     dispatch(getRecipes());
   }, [dispatch]);
+
+  const Footer = () => {
+    // if (!this.state.loadingMore) return null;
+
+    return (
+      <View
+        style={{
+          position: "relative",
+          width: 30,
+          height: 30,
+          paddingVertical: 20,
+          borderTopWidth: 1,
+          marginTop: 10,
+          marginBottom: 10,
+          borderColor: "Black",
+        }}
+      >
+        <ActivityIndicator animating size="large" />
+      </View>
+    );
+  };
+
+  const getRecipesCall = () => {
+    dispatch(getRecipes());
+  };
 
   return (
     <>
@@ -56,6 +83,10 @@ function HomeScreen({ navigation }) {
           </View>
         )}
         keyExtractor={(recipe) => recipe.id.toString()}
+        ListHeaderComponent={<HeaderHomepage />}
+        ListFooterComponent={Footer()}
+        onEndReached={() => getRecipesCall()}
+        onEndReachedThreshold={0}
       />
     </>
   );
