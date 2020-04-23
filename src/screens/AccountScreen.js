@@ -8,12 +8,12 @@ import { selectUserCategories, selectUser } from "../store/user/selector";
 function AccountScreen({ navigation }) {
   const dispatch = useDispatch();
   const categories = useSelector(selectUserCategories);
-  const user = useSelector(selectUser);
+  // const user = useSelector(selectUser);
   // console.log("Categories in screen", categories);
 
   useEffect(() => {
     dispatch(getUserCategories());
-  }, [dispatch]);
+  }, [dispatch, getUserCategories()]);
 
   return (
     <View>
@@ -52,7 +52,13 @@ function AccountScreen({ navigation }) {
         horizontal={false}
         data={categories}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("RecipeOverview", {
+                categoryId: item.id,
+              })
+            }
+          >
             <Card>
               <Image
                 source={{

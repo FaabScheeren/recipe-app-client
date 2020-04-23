@@ -99,10 +99,46 @@ export const addRecipeThunk = (
       );
 
       dispatch(storeRecipe(response.data));
-      const recipeState = getState().recipes.recipes;
+      // const recipeState = getState().recipes.recipes;
     } catch (e) {
       console.log(e);
     }
+  };
+};
+
+export const changeRecipeThunk = (
+  id,
+  title,
+  description,
+  stepsArray,
+  cookingTime,
+  category,
+  ingredientsArray,
+  photo,
+  is_public
+) => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+
+    const response = await recipeApi.patch(
+      "/recipes",
+      {
+        id,
+        title,
+        description,
+        stepsArray,
+        cookingTime,
+        category,
+        ingredientsArray,
+        photo,
+        is_public,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   };
 };
 
@@ -115,7 +151,7 @@ export const getCategoriesThunk = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("RESPONSE", response.data);
+      // console.log("RESPONSE", response.data);
       dispatch(storeCategories(response.data));
     } catch (e) {
       console.log(e);

@@ -4,17 +4,38 @@ import { Image, Button, Divider, List, ListItem } from "react-native-elements";
 import { View, Text, StyleSheet } from "react-native";
 import { getRecipeDetails } from "../store/recipes/actions";
 import { recipeDetailsSelector } from "../store/recipes/selectors";
+import { selectUser } from "../store/user/selector";
 import { FontAwesome } from "@expo/vector-icons";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 function RecipeDetailsScreen({ navigation, route }) {
   const dispatch = useDispatch();
+  const selectCurrentUser = useSelector(selectUser);
   const selectDetails = useSelector(recipeDetailsSelector);
   const { recipeId } = route.params;
 
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
-  }, [dispatch]);
+  }, [dispatch, getRecipeDetails]);
+
+  const userId = selectDetails ? selectDetails.userId : -1;
+
+  if (userId) {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Edit", {
+              recipeId,
+            })
+          }
+        >
+          <Icon name="edit" size={25} color="#fff" />
+        </TouchableOpacity>
+      ),
+    });
+  }
 
   return (
     selectDetails && (
