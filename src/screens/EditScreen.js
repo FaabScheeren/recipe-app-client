@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { View, ScrollView, Text, Picker, Switch } from "react-native";
 import { Input, Button, Image } from "react-native-elements";
 import { addRecipeThunk, getCategoriesThunk } from "../store/recipes/actions";
-import { getRecipeDetails } from "../store/recipes/actions";
+import { getRecipeDetails, changeRecipeThunk } from "../store/recipes/actions";
 import { categoriesSelector } from "../store/recipes/selectors";
 import { recipeDetailsSelector } from "../store/recipes/selectors";
 
@@ -26,8 +26,9 @@ function AddRecipeScreen({ navigation, route }) {
     }
   );
 
-  console.log("Default steps", defaultStepsArray);
+  console.log("Default steps", selectDetails.ingredients);
 
+  const [id, setId] = useState(selectDetails.id);
   const [title, setTitle] = useState(selectDetails.title);
   const [description, setDescription] = useState(selectDetails.description);
   // const [stepsArray, setStepsArray] = useState(selectDetails.steps);
@@ -48,7 +49,20 @@ function AddRecipeScreen({ navigation, route }) {
   const [ingredient, setIngredient] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
 
-  console.log("INGREDIENTS", selectDetails.ingredients);
+  // console.log("INGREDIENTS", selectDetails.ingredients);
+  //   console.log(`DATA IS:
+  // ${title}
+  // ${description}
+  // ${stepsArray}
+  // ${cookingTime}
+  // ${time}
+  // ${category}
+  // ${ingredientsArray}
+  // ${photo}
+  // ${is_public}
+  //   `);
+
+  // console.log("ID", id);
 
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
@@ -67,7 +81,8 @@ function AddRecipeScreen({ navigation, route }) {
   // Adding recipe to database
   const handleSubmit = () => {
     dispatch(
-      addRecipeThunk(
+      changeRecipeThunk(
+        id,
         title,
         description,
         stepsArray,
@@ -78,7 +93,9 @@ function AddRecipeScreen({ navigation, route }) {
         is_public
       )
     );
-    navigation.navigate("Home");
+    navigation.navigate("RecipeDetails", {
+      recipeId,
+    });
   };
 
   // Image picker
