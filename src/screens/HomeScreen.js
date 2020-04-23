@@ -71,7 +71,11 @@ function HomeScreen({ navigation }) {
                 style={{ width: 420, height: 420 }}
               />
               <View>
-                <Text>{item.title}</Text>
+                <Text
+                  style={{ fontFamily: "poppins", fontSize: 24, margin: 5 }}
+                >
+                  {item.title}
+                </Text>
                 <Text>{moment(item.createdAt).fromNow()}</Text>
                 <Text>
                   {item.user.first_name} {item.user.last_name}
