@@ -109,7 +109,10 @@ function AddRecipeScreen({ navigation }) {
         style={{ width: 420, height: 420 }}
       />
 
-      <Button title="Add image" onPress={() => openImagePickerAsync()} />
+      <Button
+        title={photo ? "Add image" : "Change image"}
+        onPress={() => openImagePickerAsync()}
+      />
       <Input onChangeText={(text) => setTitle(text)} label="Title" />
       <Input
         onChangeText={(text) => setDescription(text)}
