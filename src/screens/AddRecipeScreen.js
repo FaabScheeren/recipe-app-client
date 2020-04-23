@@ -10,7 +10,7 @@ function AddRecipeScreen({ navigation }) {
   const dispatch = useDispatch();
   const selectCategories = useSelector(categoriesSelector);
 
-  const [title, setTitle] = useState(titleParam);
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [stepsArray, setStepsArray] = useState([]);
   const [cookingTime, setCookingTime] = useState("");

@@ -17,7 +17,7 @@ function RecipeDetailsScreen({ navigation, route }) {
 
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
-  }, [dispatch]);
+  }, [dispatch, getRecipeDetails()]);
 
   // if (selectDetails !== {} && selectCurrentUser !== {}) {
   //   if (selectDetails.userId === selectCurrentUser.id) {
