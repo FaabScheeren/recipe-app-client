@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import { Image } from "react-native-elements";
 import { recipeSelector } from "../store/recipes/selectors";
-import { selectUser } from "../store/user/selector";
+import { selectUser, theState } from "../store/user/selector";
+import { selectAppLoading } from "../store/appState/selectors";
 import { getRecipes } from "../store/recipes/actions";
 import { FontAwesome } from "@expo/vector-icons";
 import HeaderHomepage from "../components/HeaderHomepage";
@@ -19,14 +20,16 @@ import HeaderHomepage from "../components/HeaderHomepage";
 function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const selectRecipes = useSelector(recipeSelector);
-  const user = useSelector(selectUser);
+  const state = useSelector(selectAppLoading);
 
   useEffect(() => {
     dispatch(getRecipes());
   }, [dispatch]);
 
+  console.log("State", state);
+
   const Footer = () => {
-    // if (!this.state.loadingMore) return null;
+    if (!selectAppLoading) return null;
 
     return (
       <View

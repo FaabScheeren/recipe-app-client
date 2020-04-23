@@ -1,5 +1,6 @@
 import recipeApi from "../../config/api";
 import { getUserCategories } from "../user/actions";
+import { appLoading, appDoneLoading } from "../appState/actions";
 
 const storeRecipes = (recipe) => {
   return {
@@ -31,6 +32,8 @@ const storeCategories = (categories) => {
 
 export const getRecipes = () => {
   return async (dispatch, getState) => {
+    dispatch(appLoading());
+
     const token = getState().user.token;
     const recipesAmount =
       getState().recipes.recipes.length === null
@@ -60,6 +63,7 @@ export const getRecipes = () => {
       // console.log("RESPONSE", response.data);
 
       dispatch(storeRecipes(response.data));
+      dispatch(appDoneLoading());
     } catch (e) {
       console.log(e);
     }
@@ -69,7 +73,6 @@ export const getRecipes = () => {
 export const getRecipeDetails = (id) => {
   return async (dispatch, getState) => {
     const token = getState().user.token;
-
     try {
       const response = await recipeApi.get(`/recipes/details/${id}`, {
         headers: {
@@ -140,7 +143,7 @@ export const changeRecipeThunk = (
 ) => {
   return async (dispatch, getState) => {
     const token = getState().user.token;
-
+    dispatch;
     const response = await recipeApi.patch(
       "/recipes",
       {
@@ -162,9 +165,6 @@ export const changeRecipeThunk = (
     );
     dispatch(getUserCategories());
     dispatch(getRecipeDetails(recipeId));
-    // navigation.navigate("RecipeDetails", {
-    //   recipeId,
-    // });
   };
 };
 
