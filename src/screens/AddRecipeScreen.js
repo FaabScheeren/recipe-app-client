@@ -110,7 +110,7 @@ function AddRecipeScreen({ navigation }) {
       />
 
       <Button
-        title={photo ? "Add image" : "Change image"}
+        title={!photo ? "Add image" : "Change image"}
         onPress={() => openImagePickerAsync()}
       />
       <Input onChangeText={(text) => setTitle(text)} label="Title" />
