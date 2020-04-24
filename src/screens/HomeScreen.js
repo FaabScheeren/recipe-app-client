@@ -16,7 +16,7 @@ import { selectAppLoading } from "../store/appState/selectors";
 import { getRecipes } from "../store/recipes/actions";
 import { FontAwesome } from "@expo/vector-icons";
 import HeaderHomepage from "../components/HeaderHomepage";
-import { colors, spaces, fonts, dimensions } from "../styles/base";
+import { colors, spaces, fonts } from "../styles/base";
 
 function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -70,18 +70,20 @@ function HomeScreen({ navigation }) {
                 style={styles.image}
               />
               <Text style={styles.title}>{item.title}</Text>
-              <View>
-                <Text style={styles.subTitle}>
-                  {moment(item.createdAt).fromNow()}
-                </Text>
-                <Text style={styles.subTitle}>
-                  {item.user.first_name} {item.user.last_name}
-                </Text>
-              </View>
-              <View>
-                <FontAwesome name="heart" style={styles.icon} />
-                <FontAwesome name="comment" style={styles.icon} />
-                <FontAwesome name="share" style={styles.icon} />
+              <View style={styles.flexRowContainer}>
+                <View style={{ width: "50%" }}>
+                  <Text style={styles.subTitle}>
+                    {moment(item.createdAt).fromNow()}
+                  </Text>
+                  <Text style={styles.subTitle}>
+                    {item.user.first_name} {item.user.last_name}
+                  </Text>
+                </View>
+                <View style={[styles.iconsView, styles.flexRowContainer]}>
+                  <FontAwesome name="heart" style={styles.icon} />
+                  <FontAwesome name="comment" style={styles.icon} />
+                  <FontAwesome name="share" style={styles.icon} />
+                </View>
               </View>
             </TouchableOpacity>
           </View>
@@ -112,6 +114,15 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 30,
     color: colors.primary,
+    marginHorizontal: spaces.sm,
+  },
+  flexRowContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  iconsView: {
+    marginRight: 20,
+    marginTop: 7,
   },
 });
 
