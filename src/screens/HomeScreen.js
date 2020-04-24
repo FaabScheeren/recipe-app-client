@@ -11,11 +11,12 @@ import {
 } from "react-native";
 import { Image } from "react-native-elements";
 import { recipeSelector } from "../store/recipes/selectors";
-import { selectUser, theState } from "../store/user/selector";
+import { selectUser } from "../store/user/selector";
 import { selectAppLoading } from "../store/appState/selectors";
 import { getRecipes } from "../store/recipes/actions";
 import { FontAwesome } from "@expo/vector-icons";
 import HeaderHomepage from "../components/HeaderHomepage";
+import { colors, spaces, fonts, dimensions } from "../styles/base";
 
 function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -25,8 +26,6 @@ function HomeScreen({ navigation }) {
   useEffect(() => {
     dispatch(getRecipes());
   }, [dispatch]);
-
-  console.log("State", state);
 
   const Footer = () => {
     if (!selectAppLoading) return null;
@@ -68,19 +67,21 @@ function HomeScreen({ navigation }) {
             >
               <Image
                 source={{ uri: item.media[0].file_name }}
-                style={{ width: 420, height: 420 }}
+                style={styles.image}
               />
+              <Text style={styles.title}>{item.title}</Text>
               <View>
-                <Text>{item.title}</Text>
-                <Text>{moment(item.createdAt).fromNow()}</Text>
-                <Text>
+                <Text style={styles.subTitle}>
+                  {moment(item.createdAt).fromNow()}
+                </Text>
+                <Text style={styles.subTitle}>
                   {item.user.first_name} {item.user.last_name}
                 </Text>
               </View>
               <View>
-                <FontAwesome name="heart" />
-                <FontAwesome name="comment" />
-                <FontAwesome name="share" />
+                <FontAwesome name="heart" style={styles.icon} />
+                <FontAwesome name="comment" style={styles.icon} />
+                <FontAwesome name="share" style={styles.icon} />
               </View>
             </TouchableOpacity>
           </View>
@@ -94,5 +95,24 @@ function HomeScreen({ navigation }) {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  image: { alignSelf: "stretch", height: 420 },
+  title: {
+    fontFamily: fonts.header,
+    fontSize: 24,
+    marginHorizontal: 10,
+    marginTop: 10,
+  },
+  subTitle: {
+    fontFamily: fonts.subHeader,
+    marginLeft: 10,
+    marginBottom: 15,
+  },
+  icon: {
+    fontSize: 30,
+    color: colors.primary,
+  },
+});
 
 export default HomeScreen;

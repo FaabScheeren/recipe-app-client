@@ -1,56 +1,44 @@
 import React, { useEffect } from "react";
 import { Card } from "react-native-elements";
-import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserCategories } from "../store/user/actions";
 import { selectUserCategories, selectUser } from "../store/user/selector";
+import { colors, spaces, fonts } from "../styles/base";
 
 function AccountScreen({ navigation }) {
   const dispatch = useDispatch();
   const categories = useSelector(selectUserCategories);
-  // const user = useSelector(selectUser);
-  // console.log("Categories in screen", categories);
 
   useEffect(() => {
     dispatch(getUserCategories());
   }, [dispatch]);
 
   return (
-    <View>
-      <View style={{ height: 130, backgroundColor: "#95c6b1" }}></View>
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: -100,
-        }}
-      >
+    <>
+      <View style={styles.headerBlock}></View>
+      <View style={styles.headerImageBox}>
         <Image
           source={{
             uri:
               "https://scontent-ams4-1.xx.fbcdn.net/v/t1.0-9/45945732_1966675536760578_7126707283714637824_n.jpg?_nc_cat=103&_nc_sid=85a577&_nc_ohc=ORyzNoFw__MAX8MVmqT&_nc_ht=scontent-ams4-1.xx&oh=0966db913d520440ab0f8266595b78b9&oe=5EC3B680",
           }}
-          style={{
-            height: 200,
-            width: 200,
-            borderRadius: 200 / 2,
-            borderWidth: 0.5,
-          }}
+          style={styles.headerImage}
         />
       </View>
-      <Text
-        style={{
-          marginHorizontal: 20,
-          fontWeight: "bold",
-          fontSize: 20,
-        }}
-      >
-        Categories
-      </Text>
+      <Text style={styles.header}>Categories</Text>
       <FlatList
         numColumns={2}
         horizontal={false}
         data={categories}
+        contentContainerStyle={styles.contentContainerStyle}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() =>
@@ -59,23 +47,68 @@ function AccountScreen({ navigation }) {
               })
             }
           >
-            <Card>
+            <Card containerStyle={styles.card}>
               <Image
                 source={{
                   uri:
                     "https://static.ah.nl/static/recepten/img_071780_1600x_JPG.jpg",
                 }}
-                style={{ height: 145, width: 145 }}
+                style={styles.cardImage}
               />
-              <Text>{item.name}</Text>
-              <Text>{item.recipes.length} recipes</Text>
+              <Text style={styles.cardTitle}>{item.name}</Text>
+              <Text style={styles.cardSubTitle}>
+                {item.recipes.length} recipes
+              </Text>
             </Card>
           </TouchableOpacity>
         )}
         keyExtractor={(category) => category.id.toString()}
       />
-    </View>
+    </>
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    fontFamily: fonts.header,
+    fontSize: fonts.lg,
+    marginHorizontal: 20,
+    marginTop: 20,
+  },
+  headerBlock: {
+    height: 130,
+    backgroundColor: colors.primary,
+  },
+  headerImageBox: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: -100,
+  },
+  headerImage: {
+    height: 200,
+    width: 200,
+    borderRadius: 200 / 2,
+    borderWidth: 0.5,
+  },
+  cardImage: { height: 175, width: 175 },
+  card: {
+    padding: 0,
+    borderColor: colors.primary,
+    borderWidth: 0.4,
+  },
+  cardTitle: {
+    fontFamily: fonts.subHeader2,
+    fontSize: fonts.md,
+    marginVertical: spaces.sm,
+    paddingHorizontal: 15,
+  },
+  cardSubTitle: {
+    fontFamily: fonts.subHeader,
+    fontSize: fonts.sm,
+    paddingHorizontal: 15,
+    paddingBottom: 15,
+  },
+  contentContainerStyle: { paddingBottom: spaces.lg },
+});
 
 export default AccountScreen;
