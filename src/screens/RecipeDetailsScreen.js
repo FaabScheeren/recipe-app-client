@@ -49,16 +49,20 @@ function RecipeDetailsScreen({ navigation, route }) {
         <Text style={styles.title}>{selectDetails.title}</Text>
         <Text style={styles.subTitle}>{selectDetails.category.name}</Text>
         <Divider style={{ margin: 20 }} />
-        <Text style={styles.subTitle}>
-          {moment(selectDetails.createdAt).fromNow()}
-        </Text>
-        <Text style={styles.subTitle}>
-          {selectDetails.user.first_name} {selectDetails.user.last_name}
-        </Text>
-        <View>
-          <FontAwesome name="heart" style={styles.icon} />
-          <FontAwesome name="comment" style={styles.icon} />
-          <FontAwesome name="share" style={styles.icon} />
+        <View style={styles.flexRowContainer}>
+          <View>
+            <Text style={styles.subTitle}>
+              {moment(selectDetails.createdAt).fromNow()}
+            </Text>
+            <Text style={styles.subTitle}>
+              {selectDetails.user.first_name} {selectDetails.user.last_name}
+            </Text>
+          </View>
+          <View style={[styles.flexRowContainer, styles.iconsView]}>
+            <FontAwesome name="heart" style={styles.icon} />
+            <FontAwesome name="comment" style={styles.icon} />
+            <FontAwesome name="share" style={styles.icon} />
+          </View>
         </View>
         <Text style={styles.subHeaderStyle}>Ingredients</Text>
         {selectDetails.ingredients.map((ingredient, index) => {
@@ -124,6 +128,15 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 30,
     color: colors.primary,
+    marginHorizontal: spaces.sm,
+  },
+  flexRowContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  iconsView: {
+    marginRight: 20,
+    marginTop: 7,
   },
 });
 
