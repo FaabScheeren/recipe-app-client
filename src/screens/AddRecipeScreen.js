@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
-import { View, ScrollView, Text, Picker, Switch } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  Picker,
+  Switch,
+  StyleSheet,
+} from "react-native";
 import { Input, Button, Image } from "react-native-elements";
 import { addRecipeThunk, getCategoriesThunk } from "../store/recipes/actions";
 import { categoriesSelector } from "../store/recipes/selectors";
+import { colors, spaces, fonts, dimensions } from "../styles/base";
 
 function AddRecipeScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -113,8 +121,17 @@ function AddRecipeScreen({ navigation }) {
         title={!photo ? "Add image" : "Change image"}
         onPress={() => openImagePickerAsync()}
       />
-      <Input onChangeText={(text) => setTitle(text)} label="Title" />
       <Input
+        labelStyle={styles.subHeaderStyle}
+        inputStyle={styles.inputText}
+        containerStyle={styles.container}
+        onChangeText={(text) => setTitle(text)}
+        label="Title"
+      />
+      <Input
+        labelStyle={styles.subHeaderStyle}
+        inputStyle={styles.inputText}
+        containerStyle={styles.container}
         onChangeText={(text) => setDescription(text)}
         label="Description"
       />
@@ -127,6 +144,9 @@ function AddRecipeScreen({ navigation }) {
         );
       })}
       <Input
+        labelStyle={styles.subHeaderStyle}
+        inputStyle={styles.inputText}
+        containerStyle={styles.container}
         value={step}
         onChangeText={(text) => setStep(text)}
         label="Steps"
@@ -136,11 +156,14 @@ function AddRecipeScreen({ navigation }) {
         }
       />
       <Input
+        labelStyle={styles.subHeaderStyle}
+        inputStyle={styles.inputText}
+        containerStyle={styles.container}
         onChangeText={(text) => setCookingTime(text)}
         label="Cooking time"
         keyboardType="numeric"
       />
-      <Text>Choose a category for your recipe.</Text>
+      <Text style={styles.text}>Choose a category for your recipe.</Text>
       <Picker
         selectedValue={category}
         onValueChange={(item) => setCategory(item)}
@@ -160,6 +183,9 @@ function AddRecipeScreen({ navigation }) {
         return <Text key={ingredient}>{ingredient}</Text>;
       })}
       <Input
+        labelStyle={styles.subHeaderStyle}
+        inputStyle={styles.inputText}
+        containerStyle={styles.container}
         value={ingredient}
         onChangeText={(text) => setIngredient(text)}
         label="Ingredients"
@@ -173,14 +199,57 @@ function AddRecipeScreen({ navigation }) {
           )
         }
       />
-      <Text>Do you want to show this recipe on your public profile?</Text>
+      <Text style={styles.text}>
+        Do you want to show this recipe on your public profile?
+      </Text>
       <Switch
+        style={styles.toggle}
         value={is_public}
         onValueChange={() => setIs_public(!is_public)}
       />
-      <Button title="Add recipe" onPress={() => handleSubmit()} />
+      <Button
+        style={styles.button}
+        title="Add recipe"
+        onPress={() => handleSubmit()}
+      />
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  stepTitleStyle: {
+    fontFamily: fonts.subHeader2,
+    fontSize: fonts.sm,
+    marginHorizontal: spaces.md,
+    marginTop: spaces.md,
+  },
+  subHeaderStyle: {
+    fontFamily: fonts.subHeader2,
+    fontSize: fonts.md,
+    color: "black",
+    marginVertical: spaces.sm,
+  },
+  text: {
+    fontFamily: fonts.text,
+    fontSize: fonts.sm,
+    marginHorizontal: spaces.md,
+  },
+  inputText: {
+    fontFamily: fonts.text,
+    fontSize: fonts.sm,
+    marginBottom: spaces.sm,
+  },
+  container: {
+    margin: spaces.sm,
+  },
+  button: {
+    width: 150,
+    alignSelf: "center",
+    marginVertical: spaces.lg,
+  },
+  toggle: {
+    margin: spaces.sm,
+  },
+});
 
 export default AddRecipeScreen;
