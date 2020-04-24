@@ -95,12 +95,11 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     fontFamily: fonts.subHeader,
-    marginLeft: 10,
+    marginLeft: spaces.sm,
     marginBottom: 5,
   },
   subHeaderStyle: {
     fontFamily: fonts.subHeader2,
-    // fontWeight: "bold",
     fontSize: fonts.md,
     marginHorizontal: spaces.sm,
     marginVertical: spaces.md,

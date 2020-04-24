@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
-import { View, ScrollView, Text, Picker, Switch } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  Picker,
+  Switch,
+  StyleSheet,
+} from "react-native";
 import { Input, Button, Image } from "react-native-elements";
 import { addRecipeThunk, getCategoriesThunk } from "../store/recipes/actions";
 import { getRecipeDetails, changeRecipeThunk } from "../store/recipes/actions";
 import { categoriesSelector } from "../store/recipes/selectors";
 import { recipeDetailsSelector } from "../store/recipes/selectors";
+import { colors, spaces, fonts, dimensions } from "../styles/base";
 
 function AddRecipeScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -161,11 +169,17 @@ function AddRecipeScreen({ navigation, route }) {
 
       <Button title="Change image" onPress={() => openImagePickerAsync()} />
       <Input
+        labelStyle={styles.subHeaderStyle}
+        inputStyle={styles.inputText}
+        containerStyle={styles.container}
         onChangeText={(text) => setTitle(text)}
         label="Title"
         value={title}
       />
       <Input
+        labelStyle={styles.subHeaderStyle}
+        inputStyle={styles.inputText}
+        containerStyle={styles.container}
         onChangeText={(text) => setDescription(text)}
         label="Description"
         value={description}
@@ -174,12 +188,15 @@ function AddRecipeScreen({ navigation, route }) {
       {stepsArray.map((step, index) => {
         return (
           <View key={step}>
-            <Text>Step {index + 1}</Text>
-            <Text>{step}</Text>
+            <Text style={styles.stepTitleStyle}>Step {index + 1}</Text>
+            <Text style={styles.text}>{step}</Text>
           </View>
         );
       })}
       <Input
+        labelStyle={styles.subHeaderStyle}
+        inputStyle={styles.text}
+        containerStyle={styles.container}
         value={step}
         onChangeText={(text) => setStep(text)}
         label="Steps"
@@ -189,13 +206,16 @@ function AddRecipeScreen({ navigation, route }) {
         }
       />
       <Input
+        labelStyle={styles.subHeaderStyle}
+        inputStyle={styles.text}
+        containerStyle={styles.container}
         onChangeText={(text) => setCookingTime(text)}
         label="Cooking time"
         value={time}
         type={Number}
         keyboardType="numeric"
       />
-      <Text>Choose a category for your recipe.</Text>
+      <Text style={styles.text}>Choose a category for your recipe.</Text>
       <Picker
         selectedValue={category}
         onValueChange={(item) => setCategory(item)}
@@ -212,9 +232,17 @@ function AddRecipeScreen({ navigation, route }) {
         })}
       </Picker>
       {ingredientsArray.map((ingredient) => {
-        return <Text key={ingredient}>{ingredient}</Text>;
+        return (
+          <Text style={styles.text} key={ingredient}>
+            {" "}
+            - {ingredient}
+          </Text>
+        );
       })}
       <Input
+        labelStyle={styles.subHeaderStyle}
+        inputStyle={styles.text}
+        containerStyle={styles.container}
         value={ingredient}
         onChangeText={(text) => setIngredient(text)}
         label="Ingredients"
@@ -228,14 +256,60 @@ function AddRecipeScreen({ navigation, route }) {
           )
         }
       />
-      <Text>Do you want to show this recipe on your public profile?</Text>
+      <Text style={styles.text}>
+        Do you want to show this recipe on your public profile?
+      </Text>
       <Switch
+        style={styles.toggle}
         value={is_public}
         onValueChange={() => setIs_public(!is_public)}
       />
-      <Button title="Add recipe" onPress={() => handleSubmit()} />
+      <Button
+        style={styles.button}
+        title="Add recipe"
+        onPress={() => handleSubmit()}
+      />
+      <View style={{ height: 50 }}></View>
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  stepTitleStyle: {
+    fontFamily: fonts.subHeader2,
+    fontSize: fonts.sm,
+    marginHorizontal: spaces.md,
+    marginTop: spaces.md,
+  },
+  subHeaderStyle: {
+    fontFamily: fonts.subHeader2,
+    fontSize: fonts.md,
+    color: "black",
+    // marginHorizontal: spaces.sm,
+    marginVertical: spaces.sm,
+  },
+  text: {
+    fontFamily: fonts.text,
+    fontSize: fonts.sm,
+    marginHorizontal: spaces.md,
+  },
+  inputText: {
+    fontFamily: fonts.text,
+    fontSize: fonts.sm,
+    // marginHorizontal: spaces.sm,
+    marginBottom: spaces.sm,
+  },
+  container: {
+    margin: spaces.sm,
+  },
+  button: {
+    width: 150,
+    alignSelf: "center",
+    marginVertical: spaces.lg,
+  },
+  toggle: {
+    margin: spaces.sm,
+  },
+});
 
 export default AddRecipeScreen;
