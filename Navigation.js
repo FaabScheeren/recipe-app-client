@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 // import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconAnt from "react-native-vector-icons/AntDesign";
-import { Button } from "react-native";
+import { Button, TouchableOpacity } from "react-native";
 
 import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -20,6 +20,7 @@ import AccountScreen from "./src/screens/AccountScreen";
 import RecipeOverviewScreen from "./src/screens/RecipeOverviewScreen";
 import EditScreen from "./src/screens/EditScreen";
 import { hide } from "expo/build/launch/SplashScreen";
+import { signoutThunk } from "./src/store/user/actions";
 
 import { selectToken } from "./src/store/user/selector";
 import { selectAppLoading } from "./src/store/appState/selectors";
@@ -85,21 +86,6 @@ function getHeaderTitle(route) {
   }
 }
 
-function getHeaderRight(route) {
-  const routeName = route.state
-    ? route.state.routes[route.state.index].name
-    : route.params?.screen || "Home";
-
-  switch (routeName) {
-    case "Home":
-      return null;
-    case "Addrecipes":
-      return null;
-    case "Account":
-      return <IconAnt name="logout" size={25} color="#fff" />;
-  }
-}
-
 export default function Navigation() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
@@ -108,6 +94,30 @@ export default function Navigation() {
   useEffect(() => {
     dispatch(tryLocalLogin());
   }, [dispatch]);
+
+  function getHeaderRight(route) {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : route.params?.screen || "Home";
+
+    switch (routeName) {
+      case "Home":
+        return null;
+      case "Addrecipes":
+        return null;
+      case "Account":
+        return (
+          <TouchableOpacity onPress={() => dispatch(signoutThunk())}>
+            <IconAnt
+              style={{ marginRight: 15 }}
+              name="logout"
+              size={25}
+              color="#fff"
+            />
+          </TouchableOpacity>
+        );
+    }
+  }
 
   // if (appState) {
   //   return <WhiteScreen />;

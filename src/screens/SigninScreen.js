@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Button, Input } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-// import LoginForm from "../components/LoginForm";
 import { loginThunk } from "../store/user/actions";
+import { colors, spaces, fonts } from "../styles/base";
 
 function SigninScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -11,9 +11,12 @@ function SigninScreen({ navigation }) {
   const dispatch = useDispatch();
 
   return (
-    <View>
-      <Text>Sign in to your account</Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>Sign in to your account</Text>
       <Input
+        inputStyle={styles.inputText}
+        containerStyle={styles.inputContainer}
+        labelStyle={styles.inputLabel}
         onChangeText={(text) => setEmail(text)}
         placeholder="Email adress"
         type="email"
@@ -22,6 +25,9 @@ function SigninScreen({ navigation }) {
         label="Email adress"
       />
       <Input
+        inputStyle={styles.inputText}
+        containerStyle={styles.inputContainer}
+        labelStyle={styles.inputLabel}
         onChangeText={(text) => setPassword(text)}
         placeholder="Password"
         secureTextEntry={true}
@@ -31,6 +37,7 @@ function SigninScreen({ navigation }) {
       />
 
       <Button
+        style={styles.button}
         title="Sign in"
         onPress={() => dispatch(loginThunk(email, password))}
       />
@@ -41,8 +48,33 @@ function SigninScreen({ navigation }) {
   );
 }
 
-export default SigninScreen;
+const styles = StyleSheet.create({
+  header: {
+    fontFamily: fonts.header,
+    fontSize: fonts.md,
+    marginBottom: 75,
+  },
+  container: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginTop: "30%",
+  },
+  button: {
+    marginTop: 40,
+    marginBottom: 20,
+  },
+  inputLabel: {
+    fontFamily: fonts.subHeader2,
+    fontSize: fonts.md,
+  },
+  inputContainer: {
+    marginVertical: spaces.md,
+    marginLeft: spaces.sm,
+  },
+  inputText: {
+    fontFamily: fonts.text,
+    fontSize: fonts.md,
+  },
+});
 
-// <LoginForm
-//         onSubmit={(email, password) => dispatch(loginThunk(email, password))}
-//       />
+export default SigninScreen;

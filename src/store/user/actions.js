@@ -57,8 +57,6 @@ export const loginThunk = (email, password) => {
 };
 
 export const signoutThunk = () => {
-  // console.log("Clicked in thunk");
-
   return async (dispatch, getState) => {
     dispatch(appLoading());
     await AsyncStorage.removeItem("token");

@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Button, Input } from "react-native-elements";
-// import LoginForm from "../components/LoginForm";
 import { signupThunk } from "../store/user/actions";
-// import { tryLocalLogin } from "../store/user/actions";
+import { colors, spaces, fonts } from "../styles/base";
 
 function SignupScreen({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -13,14 +12,13 @@ function SignupScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(tryLocalLogin());
-  // }, [dispatch]);
-
   return (
-    <View>
-      <Text>Sign up</Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>Sign up</Text>
       <Input
+        inputStyle={styles.inputText}
+        containerStyle={styles.inputContainer}
+        labelStyle={styles.inputLabel}
         onChangeText={(text) => setFirstName(text)}
         autoCapitalize="none"
         autoCorrect={false}
@@ -28,6 +26,9 @@ function SignupScreen({ navigation }) {
         placeholder="Firstname"
       />
       <Input
+        inputStyle={styles.inputText}
+        containerStyle={styles.inputContainer}
+        labelStyle={styles.inputLabel}
         onChangeText={(text) => setLastName(text)}
         placeholder="Lastname"
         autoCapitalize="none"
@@ -35,6 +36,9 @@ function SignupScreen({ navigation }) {
         label="Lastname"
       />
       <Input
+        inputStyle={styles.inputText}
+        containerStyle={styles.inputContainer}
+        labelStyle={styles.inputLabel}
         onChangeText={(text) => setEmail(text)}
         placeholder="Email adress"
         type="email"
@@ -43,6 +47,9 @@ function SignupScreen({ navigation }) {
         label="Email adress"
       />
       <Input
+        inputStyle={styles.inputText}
+        containerStyle={styles.inputContainer}
+        labelStyle={styles.inputLabel}
         onChangeText={(text) => setPassword(text)}
         placeholder="Password"
         secureTextEntry={true}
@@ -52,6 +59,7 @@ function SignupScreen({ navigation }) {
       />
 
       <Button
+        style={styles.button}
         title="Sign up"
         onPress={() =>
           dispatch(signupThunk(firstName, lastName, email, password))
@@ -64,13 +72,33 @@ function SignupScreen({ navigation }) {
   );
 }
 
-// onSubmit={signupThunk(firstName, lastName, email, password)}
-// signupThunk(firstName, lastName, email, password)
+const styles = StyleSheet.create({
+  header: {
+    fontFamily: fonts.header,
+    fontSize: fonts.md,
+    marginBottom: 50,
+  },
+  container: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginTop: "15%",
+  },
+  button: {
+    marginTop: 40,
+    marginBottom: 20,
+  },
+  inputLabel: {
+    fontFamily: fonts.subHeader2,
+    fontSize: fonts.md,
+  },
+  inputContainer: {
+    marginVertical: spaces.md,
+    marginLeft: spaces.sm,
+  },
+  inputText: {
+    fontFamily: fonts.text,
+    fontSize: fonts.md,
+  },
+});
 
 export default SignupScreen;
-
-// <LoginForm
-// onSubmit={(firstName, lastName, email, password) =>
-//   dispatch(signupThunk(firstName, lastName, email, password))
-// }
-// />
