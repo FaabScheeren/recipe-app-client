@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     padding: 0,
     borderColor: colors.primary,
     borderWidth: 0.4,
+    width: 175,
   },
   cardSubTitle: {
     fontFamily: fonts.subHeader,
