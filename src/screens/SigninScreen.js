@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Button, Input } from "react-native-elements";
 import { useDispatch } from "react-redux";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { loginThunk } from "../store/user/actions";
 import { colors, spaces, fonts } from "../styles/base";
 
@@ -11,7 +17,7 @@ function SigninScreen({ navigation }) {
   const dispatch = useDispatch();
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.header}>Sign in to your account</Text>
       <Input
         inputStyle={styles.inputText}
@@ -44,7 +50,7 @@ function SigninScreen({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
         <Text>Don't have an account? Sign up here.</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
