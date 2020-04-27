@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { Button, Input } from "react-native-elements";
 import { signupThunk } from "../store/user/actions";
 import { colors, spaces, fonts } from "../styles/base";
@@ -13,7 +19,7 @@ function SignupScreen({ navigation }) {
   const dispatch = useDispatch();
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.header}>Sign up</Text>
       <Input
         inputStyle={styles.inputText}
@@ -68,7 +74,7 @@ function SignupScreen({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
         <Text>Already an account? Login here.</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
