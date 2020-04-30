@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { loginThunk } from "../store/user/actions";
+import { signinThunk } from "../store/user/actions";
 import { colors, spaces, fonts } from "../styles/base";
 
 function SigninScreen({ navigation }) {
@@ -45,7 +45,7 @@ function SigninScreen({ navigation }) {
       <Button
         style={styles.button}
         title="Sign in"
-        onPress={() => dispatch(loginThunk(email, password))}
+        onPress={() => dispatch(signinThunk(email, password))}
       />
       <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
         <Text>Don't have an account? Sign up here.</Text>
