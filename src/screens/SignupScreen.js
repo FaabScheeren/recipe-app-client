@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { signupThunk } from "../store/user/actions";
+import MessageBox from "../components/MessageBox";
 import { colors, spaces, fonts } from "../styles/base";
 
 function SignupScreen({ navigation }) {
@@ -20,6 +21,7 @@ function SignupScreen({ navigation }) {
 
   return (
     <ScrollView ContainerStyle={styles.container}>
+      <MessageBox />
       <Text style={styles.header}>Sign up</Text>
       <Input
         inputStyle={styles.inputText}
