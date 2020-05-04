@@ -1,6 +1,11 @@
 import recipeApi from "../../config/api";
 import { AsyncStorage } from "react-native";
-import { appLoading, appDoneLoading } from "../appState/actions";
+import {
+  appLoading,
+  appDoneLoading,
+  setMessage,
+  clearMessage,
+} from "../appState/actions";
 
 const signinSucces = (data) => {
   return {
@@ -42,17 +47,18 @@ export const signupThunk = (firstName, lastName, email, password) => {
 
 export const signinThunk = (email, password) => {
   return async (dispatch, getState) => {
+    dispatch(clearMessage());
     try {
       const response = await recipeApi.post("/signin", {
         email,
         password,
       });
-
       AsyncStorage.setItem("token", response.data.token);
       dispatch(signinSucces(response.data));
     } catch (e) {
-      console.log(e);
+      dispatch(setMessage(e.response.data));
     }
+    dispatch(appDoneLoading());
   };
 };
 
