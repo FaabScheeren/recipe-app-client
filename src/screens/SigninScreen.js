@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Input } from "react-native-elements";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   StyleSheet,
@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { loginThunk } from "../store/user/actions";
+import { signinThunk } from "../store/user/actions";
 import { colors, spaces, fonts } from "../styles/base";
+import MessageBox from "../components/MessageBox";
 
 function SigninScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -17,7 +18,8 @@ function SigninScreen({ navigation }) {
   const dispatch = useDispatch();
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView ContainerStyle={styles.container}>
+      <MessageBox />
       <Text style={styles.header}>Sign in to your account</Text>
       <Input
         inputStyle={styles.inputText}
@@ -41,14 +43,13 @@ function SigninScreen({ navigation }) {
         autoCorrect={false}
         label="Password"
       />
-
       <Button
         style={styles.button}
         title="Sign in"
-        onPress={() => dispatch(loginThunk(email, password))}
+        onPress={() => dispatch(signinThunk(email, password))}
       />
       <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-        <Text>Don't have an account? Sign up here.</Text>
+        <Text style={styles.text}>Don't have an account? Sign up here.</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -58,7 +59,8 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: fonts.header,
     fontSize: fonts.md,
-    marginBottom: 75,
+    marginVertical: 75,
+    textAlign: "center",
   },
   container: {
     alignItems: "center",
@@ -68,6 +70,8 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 40,
     marginBottom: 20,
+    width: "40%",
+    alignSelf: "center",
   },
   inputLabel: {
     fontFamily: fonts.subHeader2,
@@ -80,6 +84,9 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: fonts.text,
     fontSize: fonts.md,
+  },
+  text: {
+    marginHorizontal: spaces.md,
   },
 });
 

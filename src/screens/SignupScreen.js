@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { signupThunk } from "../store/user/actions";
+import MessageBox from "../components/MessageBox";
 import { colors, spaces, fonts } from "../styles/base";
 
 function SignupScreen({ navigation }) {
@@ -19,7 +20,8 @@ function SignupScreen({ navigation }) {
   const dispatch = useDispatch();
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView ContainerStyle={styles.container}>
+      <MessageBox />
       <Text style={styles.header}>Sign up</Text>
       <Input
         inputStyle={styles.inputText}
@@ -72,7 +74,7 @@ function SignupScreen({ navigation }) {
         }
       />
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-        <Text>Already an account? Login here.</Text>
+        <Text style={styles.text}>Already an account? Login here.</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -83,6 +85,8 @@ const styles = StyleSheet.create({
     fontFamily: fonts.header,
     fontSize: fonts.md,
     marginBottom: 50,
+    marginVertical: 75,
+    textAlign: "center",
   },
   container: {
     alignItems: "center",
@@ -92,6 +96,8 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 40,
     marginBottom: 20,
+    width: "40%",
+    alignSelf: "center",
   },
   inputLabel: {
     fontFamily: fonts.subHeader2,
@@ -104,6 +110,9 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: fonts.text,
     fontSize: fonts.md,
+  },
+  text: {
+    marginHorizontal: spaces.md,
   },
 });
 

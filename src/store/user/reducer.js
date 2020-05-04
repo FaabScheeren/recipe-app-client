@@ -2,7 +2,7 @@ const initialState = { token: null, categories: [] };
 
 export default userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "login":
+    case "signin":
       return { ...state, ...action.payload };
     case "signout":
       return { token: null };

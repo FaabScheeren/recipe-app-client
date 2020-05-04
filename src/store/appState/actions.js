@@ -9,3 +9,12 @@ export const appDoneLoading = () => {
     type: "appDoneLoading",
   };
 };
+
+export const setMessage = (text) => {
+  return {
+    type: "setMessage",
+    payload: text,
+  };
+};
+
+export const clearMessage = () => ({ type: "clearMessage" });
