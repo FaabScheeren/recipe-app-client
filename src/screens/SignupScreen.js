@@ -11,6 +11,7 @@ import { Button, Input } from "react-native-elements";
 import { signupThunk } from "../store/user/actions";
 import MessageBox from "../components/MessageBox";
 import { colors, spaces, fonts } from "../styles/base";
+import { clearMessage } from "../store/appState/actions";
 
 function SignupScreen({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -18,6 +19,14 @@ function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("state", () => {
+      dispatch(clearMessage());
+    });
+
+    return unsubscribe;
+  }, [dispatch, navigation]);
 
   return (
     <ScrollView ContainerStyle={styles.container}>

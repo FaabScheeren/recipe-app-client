@@ -41,6 +41,9 @@ export const signupThunk = (firstName, lastName, email, password) => {
       dispatch(signinSucces(response.data));
     } catch (e) {
       console.log(e);
+      dispatch(setMessage(e.response.data));
+      const state = getState().appState;
+      console.log("State in thunk", state);
     }
   };
 };
@@ -53,10 +56,12 @@ export const signinThunk = (email, password) => {
         email,
         password,
       });
-      AsyncStorage.setItem("token", response.data.token);
+      await AsyncStorage.setItem("token", response.data.token);
       dispatch(signinSucces(response.data));
     } catch (e) {
       dispatch(setMessage(e.response.data));
+      const state = getState().appState;
+      console.log("State in thunk", state);
     }
     dispatch(appDoneLoading());
   };
