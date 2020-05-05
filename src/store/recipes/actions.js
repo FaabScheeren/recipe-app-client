@@ -133,7 +133,6 @@ export const changeRecipeThunk = (
   ingredientsArray,
   photo,
   is_public,
-  // navigation,
   recipeId
 ) => {
   return async (dispatch, getState) => {

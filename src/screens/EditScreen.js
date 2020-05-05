@@ -57,6 +57,9 @@ function AddRecipeScreen({ navigation, route }) {
   const [ingredient, setIngredient] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
 
+  // console.log("STEPSARRAY", stepsArray);
+  // console.log("INGREDIENTS ID", ingredientId);
+
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
   }, [dispatch]);
@@ -75,11 +78,11 @@ function AddRecipeScreen({ navigation, route }) {
     indexId,
     setIndexId
   ) => {
-    if (stepsId === -1) {
+    if (indexId === -1) {
       setArray([...array, { [`${property}`]: item }]);
       setItem("");
     } else {
-      array[indexId] = { [`${property}`]: item };
+      array[indexId][property] = item;
       setItem("");
       setIndexId(-1);
     }
@@ -192,7 +195,6 @@ function AddRecipeScreen({ navigation, route }) {
               onPress={() => {
                 setStepsId(index), setStep(step.description);
               }}
-              // onPress={() => handleEditButton()}
             />
             <Text style={styles.text}>{step.description}</Text>
           </View>
@@ -244,12 +246,18 @@ function AddRecipeScreen({ navigation, route }) {
           );
         })}
       </Picker>
-      {ingredientsArray.map((ingredient) => {
+      {ingredientsArray.map((ingredient, index) => {
         return (
-          <Text style={styles.text} key={ingredient.product_name}>
-            {" "}
-            - {ingredient.product_name}
-          </Text>
+          <View key={ingredient.product_name}>
+            <Text style={styles.text}> - {ingredient.product_name}</Text>
+            <Button
+              title="Edit"
+              style={styles.editButton}
+              onPress={() => {
+                setIngredientId(index), setIngredient(ingredient.product_name);
+              }}
+            />
+          </View>
         );
       })}
       <Input
