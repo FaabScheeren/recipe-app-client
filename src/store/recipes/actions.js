@@ -40,10 +40,6 @@ export const getRecipes = () => {
         ? 0
         : getState().recipes.recipes.length;
 
-    // const offset = getState().recipes.recipes.length;
-
-    // console.log("Offset", offset);
-
     if (
       recipesAmount >= getState().recipes.recipesCount &&
       getState().recipes.recipesCount !== null
@@ -79,7 +75,6 @@ export const getRecipeDetails = (id) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log("Recipe details response", response.data);
       dispatch(storeRecipeDetails(response.data));
     } catch (e) {
       console.log(e);

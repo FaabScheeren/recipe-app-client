@@ -34,43 +34,28 @@ function AddRecipeScreen({ navigation, route }) {
     }
   );
 
-  // console.log("Default steps", selectDetails.ingredients);
-
   const [id, setId] = useState(selectDetails.id);
   const [title, setTitle] = useState(selectDetails.title);
   const [description, setDescription] = useState(selectDetails.description);
-  // const [stepsArray, setStepsArray] = useState(selectDetails.steps);
-  const [stepsArray, setStepsArray] = useState(defaultStepsArray);
+  const [stepsArray, setStepsArray] = useState(selectDetails.steps);
+  // const [stepsArray, setStepsArray] = useState(defaultStepsArray);
   const [cookingTime, setCookingTime] = useState(selectDetails.cooking_time);
   const time = cookingTime.toString();
   const [category, setCategory] = useState(selectDetails.categoryId);
-  // const [ingredientsArray, setIngredientsArray] = useState(
-  //   selectDetails.ingredients
-  // );
   const [ingredientsArray, setIngredientsArray] = useState(
-    defaultIngredientsArray
+    selectDetails.ingredients
   );
+  // const [ingredientsArray, setIngredientsArray] = useState(
+  //   defaultIngredientsArray
+  // );
   const [photo, setPhoto] = useState(selectDetails.media[0].file_name);
   const [is_public, setIs_public] = useState(selectDetails.is_public);
 
+  const [stepsId, setStepsId] = useState(-1);
+  const [ingredientId, setIngredientId] = useState(-1);
   const [step, setStep] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
-
-  // console.log("INGREDIENTS", selectDetails.ingredients);
-  //   console.log(`DATA IS:
-  // ${title}
-  // ${description}
-  // ${stepsArray}
-  // ${cookingTime}
-  // ${time}
-  // ${category}
-  // ${ingredientsArray}
-  // ${photo}
-  // ${is_public}
-  //   `);
-
-  // console.log("ID", id);
 
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
@@ -81,9 +66,23 @@ function AddRecipeScreen({ navigation, route }) {
   }, [dispatch]);
 
   // Add step or ingredient to the arrays
-  const submitHandler = (setArray, array, item, setItem) => {
-    setArray([...array, item]);
-    setItem("");
+  const submitHandler = (
+    setArray,
+    array,
+    item,
+    setItem,
+    property,
+    indexId,
+    setIndexId
+  ) => {
+    if (stepsId === -1) {
+      setArray([...array, { [`${property}`]: item }]);
+      setItem("");
+    } else {
+      array[indexId] = { [`${property}`]: item };
+      setItem("");
+      setIndexId(-1);
+    }
   };
 
   // Adding recipe to database
@@ -99,11 +98,9 @@ function AddRecipeScreen({ navigation, route }) {
         ingredientsArray,
         photo,
         is_public,
-        // navigation,
         recipeId
       )
     );
-    // getRecipeDetails(recipeId);
     navigation.navigate("RecipeDetails", {
       recipeId,
     });
@@ -187,9 +184,17 @@ function AddRecipeScreen({ navigation, route }) {
       />
       {stepsArray.map((step, index) => {
         return (
-          <View key={step}>
+          <View key={step.description}>
             <Text style={styles.stepTitleStyle}>Step {index + 1}</Text>
-            <Text style={styles.text}>{step}</Text>
+            <Button
+              title="Edit"
+              style={styles.editButton}
+              onPress={() => {
+                setStepsId(index), setStep(step.description);
+              }}
+              // onPress={() => handleEditButton()}
+            />
+            <Text style={styles.text}>{step.description}</Text>
           </View>
         );
       })}
@@ -202,7 +207,15 @@ function AddRecipeScreen({ navigation, route }) {
         label="Steps"
         blurOnSubmit={false}
         onSubmitEditing={(event) =>
-          submitHandler(setStepsArray, stepsArray, step, setStep)
+          submitHandler(
+            setStepsArray,
+            stepsArray,
+            step,
+            setStep,
+            "description",
+            stepsId,
+            setStepsId
+          )
         }
       />
       <Input
@@ -233,9 +246,9 @@ function AddRecipeScreen({ navigation, route }) {
       </Picker>
       {ingredientsArray.map((ingredient) => {
         return (
-          <Text style={styles.text} key={ingredient}>
+          <Text style={styles.text} key={ingredient.product_name}>
             {" "}
-            - {ingredient}
+            - {ingredient.product_name}
           </Text>
         );
       })}
@@ -252,7 +265,10 @@ function AddRecipeScreen({ navigation, route }) {
             setIngredientsArray,
             ingredientsArray,
             ingredient,
-            setIngredient
+            setIngredient,
+            "product_name",
+            ingredientId,
+            setIngredientId
           )
         }
       />
@@ -309,6 +325,10 @@ const styles = StyleSheet.create({
   },
   toggle: {
     margin: spaces.sm,
+  },
+  editButton: {
+    width: "15%",
+    marginLeft: spaces.md,
   },
 });
 
