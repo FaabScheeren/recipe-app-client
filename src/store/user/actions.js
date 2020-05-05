@@ -29,6 +29,7 @@ const storeUserCategories = (categories) => {
 
 export const signupThunk = (firstName, lastName, email, password) => {
   return async (dispatch, getState) => {
+    dispatch(clearMessage());
     try {
       const response = await recipeApi.post("/signup", {
         firstName,
@@ -40,7 +41,7 @@ export const signupThunk = (firstName, lastName, email, password) => {
       await AsyncStorage.setItem("token", response.data.token);
       dispatch(signinSucces(response.data));
     } catch (e) {
-      console.log(e);
+      dispatch(setMessage(e.response.data));
     }
   };
 };

@@ -16,6 +16,7 @@ import { colors, spaces, fonts } from "../styles/base";
 function AccountScreen({ navigation }) {
   const dispatch = useDispatch();
   const categories = useSelector(selectUserCategories);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(getUserCategories());
@@ -27,8 +28,7 @@ function AccountScreen({ navigation }) {
       <View style={styles.headerImageBox}>
         <Image
           source={{
-            uri:
-              "https://scontent-ams4-1.xx.fbcdn.net/v/t1.0-9/45945732_1966675536760578_7126707283714637824_n.jpg?_nc_cat=103&_nc_sid=85a577&_nc_ohc=ORyzNoFw__MAX8MVmqT&_nc_ht=scontent-ams4-1.xx&oh=0966db913d520440ab0f8266595b78b9&oe=5EC3B680",
+            uri: user.userImage,
           }}
           style={styles.headerImage}
         />
@@ -50,8 +50,7 @@ function AccountScreen({ navigation }) {
             <Card containerStyle={styles.card}>
               <Image
                 source={{
-                  uri:
-                    "https://static.ah.nl/static/recepten/img_071780_1600x_JPG.jpg",
+                  uri: item.image,
                 }}
                 style={styles.cardImage}
               />

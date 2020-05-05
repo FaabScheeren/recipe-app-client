@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { Image } from "react-native-elements";
 import { recipeSelector } from "../store/recipes/selectors";
-import { selectUser } from "../store/user/selector";
 import { selectAppLoading } from "../store/appState/selectors";
 import { getRecipes } from "../store/recipes/actions";
 import { FontAwesome } from "@expo/vector-icons";
