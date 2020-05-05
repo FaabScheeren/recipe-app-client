@@ -14,7 +14,7 @@ import { Input, Button, Image } from "react-native-elements";
 import {
   getRecipeDetails,
   changeRecipeThunk,
-  removeIngredients,
+  removeRecipeComp,
   getCategoriesThunk,
 } from "../store/recipes/actions";
 import { categoriesSelector } from "../store/recipes/selectors";
@@ -87,7 +87,7 @@ function AddRecipeScreen({ navigation, route }) {
     property
   ) => {
     const newArray = array.filter((item) => {
-      return item[property] !== removedItem;
+      return item.id !== removedItem.id;
     });
     setArray(newArray);
     setRemovedItemsArray([...removedItemsArray, removedItem]);
@@ -95,7 +95,8 @@ function AddRecipeScreen({ navigation, route }) {
 
   // Adding recipe to database
   const handleSubmit = () => {
-    dispatch(removeIngredients(removedIngredientsArray));
+    dispatch(removeRecipeComp(removedIngredientsArray, (comp = "ingredients")));
+    dispatch(removeRecipeComp(removedStepsArray, (comp = "steps")));
     dispatch(
       changeRecipeThunk(
         id,
@@ -207,7 +208,7 @@ function AddRecipeScreen({ navigation, route }) {
               style={styles.editButton}
               onPress={() =>
                 removeButtonHandler(
-                  step.description,
+                  step,
                   stepsArray,
                   setRemovedStepsArray,
                   removedStepsArray,
@@ -282,7 +283,7 @@ function AddRecipeScreen({ navigation, route }) {
               style={styles.editButton}
               onPress={() =>
                 removeButtonHandler(
-                  ingredient.product_name,
+                  ingredient,
                   ingredientsArray,
                   setRemovedIngredientsArray,
                   removedIngredientsArray,
