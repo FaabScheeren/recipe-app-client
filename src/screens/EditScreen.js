@@ -10,11 +10,16 @@ import {
   StyleSheet,
 } from "react-native";
 import { Input, Button, Image } from "react-native-elements";
-import { addRecipeThunk, getCategoriesThunk } from "../store/recipes/actions";
-import { getRecipeDetails, changeRecipeThunk } from "../store/recipes/actions";
+// import { addRecipeThunk, getCategoriesThunk } from "../store/recipes/actions";
+import {
+  getRecipeDetails,
+  changeRecipeThunk,
+  removeIngredients,
+  getCategoriesThunk,
+} from "../store/recipes/actions";
 import { categoriesSelector } from "../store/recipes/selectors";
 import { recipeDetailsSelector } from "../store/recipes/selectors";
-import { colors, spaces, fonts, dimensions } from "../styles/base";
+import { colors, spaces, fonts } from "../styles/base";
 
 function AddRecipeScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -22,43 +27,26 @@ function AddRecipeScreen({ navigation, route }) {
   const selectDetails = useSelector(recipeDetailsSelector);
   const { recipeId } = route.params;
 
-  // console.log("Recipe details", selectDetails);
-
-  const defaultStepsArray = selectDetails.steps.map((step) => {
-    return step.description;
-  });
-
-  const defaultIngredientsArray = selectDetails.ingredients.map(
-    (ingredient) => {
-      return ingredient.product_name;
-    }
-  );
-
   const [id, setId] = useState(selectDetails.id);
   const [title, setTitle] = useState(selectDetails.title);
   const [description, setDescription] = useState(selectDetails.description);
   const [stepsArray, setStepsArray] = useState(selectDetails.steps);
-  // const [stepsArray, setStepsArray] = useState(defaultStepsArray);
   const [cookingTime, setCookingTime] = useState(selectDetails.cooking_time);
   const time = cookingTime.toString();
   const [category, setCategory] = useState(selectDetails.categoryId);
   const [ingredientsArray, setIngredientsArray] = useState(
     selectDetails.ingredients
   );
-  // const [ingredientsArray, setIngredientsArray] = useState(
-  //   defaultIngredientsArray
-  // );
   const [photo, setPhoto] = useState(selectDetails.media[0].file_name);
   const [is_public, setIs_public] = useState(selectDetails.is_public);
+  const [removedIngredientsArray, setRemovedIngredientsArray] = useState([]);
+  const [removedStepsArray, setRemovedStepsArray] = useState([]);
 
   const [stepsId, setStepsId] = useState(-1);
   const [ingredientId, setIngredientId] = useState(-1);
   const [step, setStep] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
-
-  // console.log("STEPSARRAY", stepsArray);
-  // console.log("INGREDIENTS ID", ingredientId);
 
   useEffect(() => {
     dispatch(getRecipeDetails(recipeId));
@@ -88,8 +76,26 @@ function AddRecipeScreen({ navigation, route }) {
     }
   };
 
+  // console.log(removedIngredientsArray);
+
+  const removeButtonHandler = (
+    removedItem,
+    array,
+    setRemovedItemsArray,
+    removedItemsArray,
+    setArray,
+    property
+  ) => {
+    const newArray = array.filter((item) => {
+      return item[property] !== removedItem;
+    });
+    setArray(newArray);
+    setRemovedItemsArray([...removedItemsArray, removedItem]);
+  };
+
   // Adding recipe to database
   const handleSubmit = () => {
+    dispatch(removeIngredients(removedIngredientsArray));
     dispatch(
       changeRecipeThunk(
         id,
@@ -196,6 +202,20 @@ function AddRecipeScreen({ navigation, route }) {
                 setStepsId(index), setStep(step.description);
               }}
             />
+            <Button
+              title="Remove"
+              style={styles.editButton}
+              onPress={() =>
+                removeButtonHandler(
+                  step.description,
+                  stepsArray,
+                  setRemovedStepsArray,
+                  removedStepsArray,
+                  setStepsArray,
+                  "description"
+                )
+              }
+            />
             <Text style={styles.text}>{step.description}</Text>
           </View>
         );
@@ -256,6 +276,20 @@ function AddRecipeScreen({ navigation, route }) {
               onPress={() => {
                 setIngredientId(index), setIngredient(ingredient.product_name);
               }}
+            />
+            <Button
+              title="Remove"
+              style={styles.editButton}
+              onPress={() =>
+                removeButtonHandler(
+                  ingredient.product_name,
+                  ingredientsArray,
+                  setRemovedIngredientsArray,
+                  removedIngredientsArray,
+                  setIngredientsArray,
+                  "product_name"
+                )
+              }
             />
           </View>
         );
@@ -335,7 +369,7 @@ const styles = StyleSheet.create({
     margin: spaces.sm,
   },
   editButton: {
-    width: "15%",
+    width: "25%",
     marginLeft: spaces.md,
   },
 });

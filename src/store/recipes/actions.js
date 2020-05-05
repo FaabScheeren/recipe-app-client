@@ -178,3 +178,25 @@ export const getCategoriesThunk = () => {
     }
   };
 };
+
+export const removeIngredients = (removedIngredientsArray) => {
+  return async (dispatch, getState) => {
+    // console.log("To remove items", removedIngredientsArray);
+    const token = getState().user.token;
+    try {
+      const response = await recipeApi.delete(
+        `/recipes/remove/${id}`,
+        {
+          removedIngredientsArray,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
