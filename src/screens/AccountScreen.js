@@ -17,10 +17,18 @@ function AccountScreen({ navigation }) {
   const dispatch = useDispatch();
   const categories = useSelector(selectUserCategories);
   const user = useSelector(selectUser);
+  let userImage = "";
 
   useEffect(() => {
     dispatch(getUserCategories());
   }, [dispatch]);
+
+  if (user.userImage) {
+    userImage = user.userImage;
+  } else {
+    userImage =
+      "https://www.mvwautotechniek.nl/wp-content/uploads/2019/10/placeholder.png";
+  }
 
   return (
     <>
@@ -28,7 +36,8 @@ function AccountScreen({ navigation }) {
       <View style={styles.headerImageBox}>
         <Image
           source={{
-            uri: user.userImage,
+            // uri: user.userImage,
+            uri: userImage,
           }}
           style={styles.headerImage}
         />
@@ -50,7 +59,8 @@ function AccountScreen({ navigation }) {
             <Card containerStyle={styles.card}>
               <Image
                 source={{
-                  uri: item.image,
+                  uri: userImage,
+                  // uri: item.image,
                 }}
                 style={styles.cardImage}
               />

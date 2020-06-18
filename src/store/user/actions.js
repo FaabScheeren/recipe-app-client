@@ -55,7 +55,7 @@ export const signinThunk = (email, password) => {
     dispatch(clearMessage());
     try {
       // const response = await recipeApi.post("/signin", {
-      const response = await recipeApi.post("/login", {
+      const response = await recipeApi.post("/signin", {
         email,
         password,
       });
