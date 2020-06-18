@@ -27,6 +27,13 @@ const storeUserCategories = (categories) => {
     payload: categories,
   };
 };
+// storeProfileImage
+const storeProfileImage = (url) => {
+  return {
+    type: "store_profile_image",
+    payload: url,
+  };
+};
 
 export const signupThunk = (firstName, lastName, email, password) => {
   return async (dispatch, getState) => {
@@ -111,6 +118,31 @@ export const tryLocalLogin = () => {
       const userWithToken = { ...response.data, token };
       dispatch(appDoneLoading());
       dispatch(signinSucces(userWithToken));
+    }
+  };
+};
+
+export const saveProfileImage = (imageUrl) => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+
+    try {
+      const response = await recipeApi.patch(
+        "/save-profile-image",
+        {
+          imageUrl,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      dispatch(storeProfileImage(response.data.userImage));
+      // const recipeState = getState().recipes.recipes;
+    } catch (e) {
+      console.log(e);
     }
   };
 };

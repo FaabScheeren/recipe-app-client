@@ -22,7 +22,7 @@ import EditScreen from "./src/screens/EditScreen";
 import { hide } from "expo/build/launch/SplashScreen";
 import { signoutThunk } from "./src/store/user/actions";
 
-import { selectToken } from "./src/store/user/selector";
+import { selectToken, selectUser } from "./src/store/user/selector";
 import { selectAppLoading } from "./src/store/appState/selectors";
 
 import { tryLocalLogin } from "./src/store/user/actions";
@@ -82,6 +82,7 @@ function getHeaderTitle(route) {
     case "Addrecipes":
       return "Add recipe";
     case "Account":
+      // return `${user.first_name} ${user.last_name}`;
       return "Account";
   }
 }
@@ -89,6 +90,7 @@ function getHeaderTitle(route) {
 export default function Navigation() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
   const appState = useSelector(selectAppLoading);
 
   useEffect(() => {
@@ -185,8 +187,3 @@ export default function Navigation() {
     </NavigationContainer>
   );
 }
-// <Button
-//           onPress={() => alert("This is a button!")}
-//           title="Info"
-//           color="#fff"
-//         />
