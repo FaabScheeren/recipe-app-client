@@ -54,7 +54,8 @@ export const signinThunk = (email, password) => {
   return async (dispatch, getState) => {
     dispatch(clearMessage());
     try {
-      const response = await recipeApi.post("/signin", {
+      // const response = await recipeApi.post("/signin", {
+      const response = await recipeApi.post("/login", {
         email,
         password,
       });
@@ -88,10 +89,7 @@ export const getUserCategories = () => {
         },
       });
 
-      // console.log(response.data);
       dispatch(storeUserCategories(response.data));
-      // const recipeState = getState().user;
-      // console.log("Recipe state after categorie", recipeState);
     } catch (e) {
       console.log(e);
     }

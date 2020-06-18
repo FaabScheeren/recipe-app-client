@@ -119,7 +119,7 @@ export default function Navigation() {
     }
   }
 
-  // if (appState) {
+  // if (selectAppLoading) {
   //   return <WhiteScreen />;
   // }
 

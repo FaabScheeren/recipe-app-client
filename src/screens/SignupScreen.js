@@ -19,6 +19,7 @@ function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const appLoading = useSelector(selectAppLoading);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("state", () => {
