@@ -24,9 +24,8 @@ function SignupScreen({ navigation }) {
     const unsubscribe = navigation.addListener("state", () => {
       dispatch(clearMessage());
     });
-
     return unsubscribe;
-  }, [dispatch, navigation]);
+  }, [navigation, dispatch]);
 
   return (
     <ScrollView ContainerStyle={styles.container}>

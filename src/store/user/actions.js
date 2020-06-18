@@ -1,3 +1,4 @@
+// This is a check
 import recipeApi from "../../config/api";
 import { AsyncStorage } from "react-native";
 import {
@@ -29,6 +30,7 @@ const storeUserCategories = (categories) => {
 
 export const signupThunk = (firstName, lastName, email, password) => {
   return async (dispatch, getState) => {
+    dispatch(clearMessage());
     try {
       const response = await recipeApi.post("/signup", {
         firstName,

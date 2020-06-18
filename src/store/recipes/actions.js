@@ -40,10 +40,6 @@ export const getRecipes = () => {
         ? 0
         : getState().recipes.recipes.length;
 
-    // const offset = getState().recipes.recipes.length;
-
-    // console.log("Offset", offset);
-
     if (
       recipesAmount >= getState().recipes.recipesCount &&
       getState().recipes.recipesCount !== null
@@ -79,7 +75,6 @@ export const getRecipeDetails = (id) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log("Recipe details response", response.data);
       dispatch(storeRecipeDetails(response.data));
     } catch (e) {
       console.log(e);
@@ -138,7 +133,6 @@ export const changeRecipeThunk = (
   ingredientsArray,
   photo,
   is_public,
-  // navigation,
   recipeId
 ) => {
   return async (dispatch, getState) => {
@@ -179,6 +173,25 @@ export const getCategoriesThunk = () => {
       });
       // console.log("RESPONSE", response.data);
       dispatch(storeCategories(response.data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const removeRecipeComp = (removedItemsArray, comp) => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+    console.log("token", token);
+    try {
+      const response = await recipeApi.delete(`/recipes/remove/${comp}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          removedItemsArray,
+        },
+      });
     } catch (e) {
       console.log(e);
     }
