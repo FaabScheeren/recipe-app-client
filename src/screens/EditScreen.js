@@ -8,6 +8,7 @@ import {
   Picker,
   Switch,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import { Input, Button, Image } from "react-native-elements";
 // import { addRecipeThunk, getCategoriesThunk } from "../store/recipes/actions";
@@ -20,6 +21,7 @@ import {
 import { categoriesSelector } from "../store/recipes/selectors";
 import { recipeDetailsSelector } from "../store/recipes/selectors";
 import { colors, spaces, fonts } from "../styles/base";
+import { FontAwesome } from "@expo/vector-icons";
 
 function AddRecipeScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -66,13 +68,16 @@ function AddRecipeScreen({ navigation, route }) {
     indexId,
     setIndexId
   ) => {
-    if (indexId === -1) {
-      setArray([...array, { [`${property}`]: item }]);
-      setItem("");
-    } else {
-      array[indexId][property] = item;
-      setItem("");
-      setIndexId(-1);
+    // set if setItem is false/empty return nul
+    if (item !== "") {
+      if (indexId === -1) {
+        setArray([...array, { [`${property}`]: item }]);
+        setItem("");
+      } else {
+        array[indexId][property] = item;
+        setItem("");
+        setIndexId(-1);
+      }
     }
   };
 
@@ -95,8 +100,8 @@ function AddRecipeScreen({ navigation, route }) {
 
   // Adding recipe to database
   const handleSubmit = () => {
-    dispatch(removeRecipeComp(removedIngredientsArray, (comp = "ingredients")));
-    dispatch(removeRecipeComp(removedStepsArray, (comp = "steps")));
+    dispatch(removeRecipeComp(removedIngredientsArray, "ingredients"));
+    dispatch(removeRecipeComp(removedStepsArray, "steps"));
     dispatch(
       changeRecipeThunk(
         id,
@@ -196,28 +201,33 @@ function AddRecipeScreen({ navigation, route }) {
         return (
           <View key={step.description}>
             <Text style={styles.stepTitleStyle}>Step {index + 1}</Text>
-            <Button
-              title="Edit"
-              style={styles.editButton}
-              onPress={() => {
-                setStepsId(index), setStep(step.description);
-              }}
-            />
-            <Button
-              title="Remove"
-              style={styles.editButton}
-              onPress={() =>
-                removeButtonHandler(
-                  step,
-                  stepsArray,
-                  setRemovedStepsArray,
-                  removedStepsArray,
-                  setStepsArray,
-                  "description"
-                )
-              }
-            />
-            <Text style={styles.text}>{step.description}</Text>
+            <View style={styles.viewPoint}>
+              <Text style={styles.textPoint}>{step.description}</Text>
+              <TouchableOpacity
+                style={styles.editTouch}
+                onPress={() => {
+                  setStepsId(index), setStep(step.description);
+                }}
+              >
+                <FontAwesome name="edit" style={styles.icon} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.editTouch}
+                onPress={() =>
+                  removeButtonHandler(
+                    step,
+                    stepsArray,
+                    setRemovedStepsArray,
+                    removedStepsArray,
+                    setStepsArray,
+                    "description"
+                  )
+                }
+              >
+                <FontAwesome name="trash" style={styles.icon} />
+              </TouchableOpacity>
+            </View>
           </View>
         );
       })}
@@ -268,19 +278,22 @@ function AddRecipeScreen({ navigation, route }) {
         })}
       </Picker>
       {ingredientsArray.map((ingredient, index) => {
+        // console.log(ingredient);
         return (
-          <View key={ingredient.product_name}>
-            <Text style={styles.text}> - {ingredient.product_name}</Text>
-            <Button
-              title="Edit"
-              style={styles.editButton}
+          <View key={ingredient.product_name} style={styles.viewPoint}>
+            <Text style={styles.textPoint}> - {ingredient.product_name}</Text>
+
+            <TouchableOpacity
+              style={styles.editTouch}
               onPress={() => {
                 setIngredientId(index), setIngredient(ingredient.product_name);
               }}
-            />
-            <Button
-              title="Remove"
-              style={styles.editButton}
+            >
+              <FontAwesome name="edit" style={styles.icon} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.editTouch}
               onPress={() =>
                 removeButtonHandler(
                   ingredient,
@@ -291,7 +304,9 @@ function AddRecipeScreen({ navigation, route }) {
                   "product_name"
                 )
               }
-            />
+            >
+              <FontAwesome name="trash" style={styles.icon} />
+            </TouchableOpacity>
           </View>
         );
       })}
@@ -325,7 +340,7 @@ function AddRecipeScreen({ navigation, route }) {
       />
       <Button
         style={styles.button}
-        title="Add recipe"
+        title="Edit recipe"
         onPress={() => handleSubmit()}
       />
       <View style={{ height: 50 }}></View>
@@ -369,9 +384,23 @@ const styles = StyleSheet.create({
   toggle: {
     margin: spaces.sm,
   },
-  editButton: {
-    width: "25%",
-    marginLeft: spaces.md,
+  editTouch: {
+    width: "7.5%",
+    marginLeft: spaces.sm,
+  },
+  icon: {
+    fontSize: 20,
+    marginLeft: 5,
+  },
+  viewPoint: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  textPoint: {
+    fontFamily: fonts.text,
+    fontSize: fonts.sm,
+    marginHorizontal: spaces.md,
+    width: "68%",
   },
 });
 

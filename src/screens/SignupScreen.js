@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   StyleSheet,
@@ -12,6 +12,7 @@ import { signupThunk } from "../store/user/actions";
 import MessageBox from "../components/MessageBox";
 import { colors, spaces, fonts } from "../styles/base";
 import { clearMessage } from "../store/appState/actions";
+import { selectAppLoading } from "../store/appState/selectors";
 
 function SignupScreen({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -19,12 +20,12 @@ function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const appLoading = useSelector(selectAppLoading);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("state", () => {
       dispatch(clearMessage());
     });
-
     return unsubscribe;
   }, [navigation, dispatch]);
 

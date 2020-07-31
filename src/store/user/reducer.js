@@ -8,6 +8,8 @@ export default userReducer = (state = initialState, action) => {
       return { token: null };
     case "add_user_categories":
       return { ...state, categories: [...action.payload] };
+    case "add_user_categories":
+      return { ...state, userImage: action.payload };
     default:
       return state;
   }

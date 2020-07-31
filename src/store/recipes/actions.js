@@ -76,6 +76,8 @@ export const getRecipeDetails = (id) => {
         },
       });
       dispatch(storeRecipeDetails(response.data));
+      console.log(getState().recipes.recipeDetails);
+      // state.recipes.recipeDetails
     } catch (e) {
       console.log(e);
     }
